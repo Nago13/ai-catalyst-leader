@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA na Empresa | Acelere sua Produtividade</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Top Banner -->
+    <div class="top-banner">
+        <p>Descubra qual IA pode multiplicar sua produtividade hoje</p>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">◈</span>
+                <span class="logo-text">AI<span class="logo-accent">Catalyst</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="#diagnostico">Diagnóstico</a>
+                <a href="#insights">Insights</a>
+                <a href="#blog">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Fixed Orbs for Parallax Effect -->
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-4"></div>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg">
+            <div class="grid-overlay"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="pulse"></span>
+                <span>95% das empresas têm ROI zero em IA</span>
+            </div>
+            <h1 class="hero-title">
+                Sua empresa está <span class="gradient-text">voando às cegas</span> na revolução da IA
+            </h1>
+            <p class="hero-subtitle">
+                Bilhões investidos. Zero métricas. Enquanto sua empresa demora para agir,<br>
+                <strong>você pode assumir o controle</strong> da sua produtividade hoje.
+            </p>
+            <div class="hero-cta">
+                <a href="#diagnostico" class="btn btn-primary">
+                    <span>Descobrir minha IA ideal</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#insights" class="btn btn-secondary">Ver dados do mercado</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">$644B</span>
+                    <span class="stat-label">Investimento global em IA (2025)</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">375M</span>
+                    <span class="stat-label">Empregos em transição até 2030</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">63%</span>
+                    <span class="stat-label">Empresas sem habilidades de IA</span>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Role para descobrir</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </header>
+
+    <!-- Insights Section -->
+    <section class="problem-section" id="insights">
+        <div class="container">
+            <!-- Descoberta Section -->
+            <div class="insight-section">
+                <div class="insight-content">
+                    <div class="insight-tag">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        <span>DESCOBERTA</span>
+                    </div>
+                    <h2 class="insight-title">
+                        Descubra como suas equipes <span class="gradient-text">usam IA</span>
+                    </h2>
+                    <p class="insight-description">
+                        Categorizamos o que as pessoas estão fazendo com IA, como pesquisa, criação de conteúdo, automação de workflows e muito mais. Essa categorização mostra onde suas iniciativas de IA estão gerando resultados.
+                    </p>
+                    <ul class="insight-bullets">
+                        <li>Identifique padrões de uso em diferentes departamentos</li>
+                        <li>Otimize investimentos baseado em dados reais</li>
+                        <li>Descubra oportunidades inexploradas</li>
+                    </ul>
+                </div>
+                <div class="insight-chart">
+                    <canvas id="discoveryChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Competência Section -->
+            <div class="insight-section">
+                <div class="insight-content">
+                    <div class="insight-tag">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3v18h18"/>
+                            <path d="M18 17V9M13 17V5M8 17v-3"/>
+                        </svg>
+                        <span>COMPETÊNCIA</span>
+                    </div>
+                    <h2 class="insight-title">
+                        Entenda a competência de IA <span class="gradient-text">das suas equipes</span>
+                    </h2>
+                    <p class="insight-description">
+                        Melhore a Maturidade de IA. Combinamos uso, competência e sentimento para gerar AI Maturity Scores ao longo do tempo, fornecendo aos líderes medidas claras, comparáveis e consistentes de adoção e impacto entre equipes.
+                    </p>
+                    <ul class="insight-bullets">
+                        <li>Acompanhe evolução por departamento</li>
+                        <li>Compare performance entre times</li>
+                        <li>Identifique áreas que precisam de suporte</li>
+                    </ul>
+                </div>
+                <div class="insight-chart">
+                    <canvas id="competenceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Eficiência Section -->
+            <div class="insight-section">
+                <div class="insight-content">
+                    <div class="insight-tag">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                        <span>EFICIÊNCIA</span>
+                    </div>
+                    <h2 class="insight-title">
+                        Compare economia de <span class="gradient-text">tempo por equipe</span>
+                    </h2>
+                    <p class="insight-description">
+                        Avalie como a adoção de IA impacta a eficiência da equipe combinando detecção de uso passivo com pesquisas de usuários. Avalie se as equipes estão maximizando o valor que podem obter das soluções de IA disponíveis e forneça suporte de habilitação onde for mais eficaz.
+                    </p>
+                    <ul class="insight-bullets">
+                        <li>Quantifique ganhos de produtividade</li>
+                        <li>Identifique times que precisam de treinamento</li>
+                        <li>Justifique investimentos com dados concretos</li>
+                    </ul>
+                </div>
+                <div class="insight-chart">
+                    <canvas id="efficiencyChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Governança Section -->
+            <div class="insight-section">
+                <div class="insight-content">
+                    <div class="insight-tag">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>GOVERNANÇA</span>
+                    </div>
+                    <h2 class="insight-title">
+                        Descubra todas as aplicações de IA <span class="gradient-text">em uso</span>
+                    </h2>
+                    <p class="insight-description">
+                        Encontre todas as ferramentas de IA, aprovadas ou não, e defina ou aplique políticas de dados e uso para cada uma. Discernimos entre licenças pessoais e empresariais, e orientamos os usuários para as aplicações aprovadas.
+                    </p>
+                    <ul class="insight-bullets">
+                        <li>Visibilidade completa de ferramentas em uso</li>
+                        <li>Controle de licenças e conformidade</li>
+                        <li>Redução de riscos de segurança</li>
+                    </ul>
+                </div>
+                <div class="governance-dashboard">
+                    <div class="governance-cards">
+                        <div class="governance-card">
+                            <div class="governance-label">Apps Autorizados</div>
+                            <div class="governance-value">42</div>
+                            <div class="governance-trend trend-up">12% ↑</div>
+                        </div>
+                        <div class="governance-card">
+                            <div class="governance-label">Apps Não Autorizados</div>
+                            <div class="governance-value">19</div>
+                            <div class="governance-trend trend-down">10% ↓</div>
+                        </div>
+                        <div class="governance-card">
+                            <div class="governance-label">Risco</div>
+                            <div class="governance-value">21%</div>
+                            <div class="governance-trend trend-down">15% ↓</div>
+                        </div>
+                    </div>
+                    <div class="governance-apps">
+                        <div class="governance-app-item">
+                            <div class="app-icon">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
+                            </div>
+                            <div class="app-info">
+                                <div class="app-name">ChatGPT</div>
+                                <div class="app-type">LLM</div>
+                            </div>
+                            <div class="app-status authorized">Autorizado</div>
+                            <div class="app-events">750 eventos</div>
+                        </div>
+                        <div class="governance-app-item">
+                            <div class="app-icon">
+                                <img src="images/midjourney-logo.png?v=2" alt="Midjourney">
+                            </div>
+                            <div class="app-info">
+                                <div class="app-name">Midjourney</div>
+                                <div class="app-type">Imagem</div>
+                            </div>
+                            <div class="app-status unauthorized">Não Autorizado</div>
+                            <div class="app-events">340 eventos</div>
+                        </div>
+                        <div class="governance-app-item">
+                            <div class="app-icon">
+                                <img src="images/claude-logo.png?v=10" alt="Claude">
+                            </div>
+                            <div class="app-info">
+                                <div class="app-name">Claude</div>
+                                <div class="app-type">LLM/Código</div>
+                            </div>
+                            <div class="app-status unauthorized">Não Autorizado</div>
+                            <div class="app-events">200 eventos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Tools Section -->
+    <section class="ai-tools-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Compatibilidade</span>
+                <h2 class="section-title">Funciona com as principais <span class="gradient-text">ferramentas de IA</span></h2>
+                <p class="section-subtitle">
+                    Compatível com OpenAI, Claude, Gemini, Perplexity e <strong>300+ melhores ferramentas de IA</strong>
+                </p>
+            </div>
+            
+            <div class="logos-carousel">
+                <div class="logos-track">
+                    <!-- First set -->
+                    <div class="logo-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
+                        <span class="logo-name">ChatGPT</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/claude-logo.png?v=10" alt="Claude">
+                        <span class="logo-name">Claude</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini">
+                        <span class="logo-name">Gemini</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/copilot-logo.jpg?v=4" alt="Copilot">
+                        <span class="logo-name">Copilot</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/canva-logo.jpg?v=5" alt="Canva">
+                        <span class="logo-name">Canva</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/gamma-logo.jpg?v=4" alt="Gamma">
+                        <span class="logo-name">Gamma</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/midjourney-logo.png?v=2" alt="Midjourney">
+                        <span class="logo-name">Midjourney</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/perplexity-logo.png?v=2" alt="Perplexity">
+                        <span class="logo-name">Perplexity</span>
+                    </div>
+                    
+                    <!-- Duplicate set for seamless loop -->
+                    <div class="logo-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
+                        <span class="logo-name">ChatGPT</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/claude-logo.png?v=10" alt="Claude">
+                        <span class="logo-name">Claude</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini">
+                        <span class="logo-name">Gemini</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/copilot-logo.jpg?v=4" alt="Copilot">
+                        <span class="logo-name">Copilot</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/canva-logo.jpg?v=5" alt="Canva">
+                        <span class="logo-name">Canva</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/gamma-logo.jpg?v=4" alt="Gamma">
+                        <span class="logo-name">Gamma</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/midjourney-logo.png?v=2" alt="Midjourney">
+                        <span class="logo-name">Midjourney</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/perplexity-logo.png?v=2" alt="Perplexity">
+                        <span class="logo-name">Perplexity</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-stats-mini">
+                <div class="ai-stat-item">
+                    <span class="ai-stat-icon">✓</span>
+                    <span>Integração nativa</span>
+                </div>
+                <div class="ai-stat-item">
+                    <span class="ai-stat-icon">✓</span>
+                    <span>Suporte multiplataforma</span>
+                </div>
+                <div class="ai-stat-item">
+                    <span class="ai-stat-icon">✓</span>
+                    <span>Atualizações constantes</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diagnostic Section -->
+    <section class="diagnostic-section" id="diagnostico">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Diagnóstico Personalizado</span>
+                <h2 class="section-title">Descubra qual IA vai <span class="gradient-text">transformar</span> seu trabalho</h2>
+                <p class="section-subtitle">
+                    Responda 3 perguntas rápidas e descubra a ferramenta ideal para você — sem esperar pela sua empresa.
+                </p>
+            </div>
+            
+            <div class="diagnostic-container">
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="progress-step active" data-step="1">1</div>
+                        <div class="progress-step" data-step="2">2</div>
+                        <div class="progress-step" data-step="3">3</div>
+                        <div class="progress-step" data-step="4">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading Overlay -->
+                <div id="loadingOverlay" class="loading-overlay">
+                    <div class="loading-content">
+                        <div class="loading-spinner">
+                            <div class="spinner-ring"></div>
+                            <div class="spinner-ring"></div>
+                            <div class="spinner-ring"></div>
+                        </div>
+                        <p class="loading-text">Fazendo análise</p>
+                    </div>
+                </div>
+
+                <!-- Form Steps -->
+                <form id="diagnosticForm" class="diagnostic-form">
+                    <!-- Step 1 -->
+                    <div class="form-step active" data-step="1">
+                        <div class="question-card">
+                            <span class="question-number">01</span>
+                            <h3 class="question-title">Qual é a sua área de atuação?</h3>
+                            <p class="question-desc">Selecione a área que melhor descreve seu trabalho atual.</p>
+                            <div class="options-grid">
+                                <label class="option-card">
+                                    <input type="radio" name="area" value="tecnologia" required>
+                                    <div class="option-content">
+                                        <span>Tecnologia / TI</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="area" value="marketing">
+                                    <div class="option-content">
+                                        <span>Marketing / Vendas</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="area" value="financeiro">
+                                    <div class="option-content">
+                                        <span>Financeiro / Contábil</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="area" value="juridico">
+                                    <div class="option-content">
+                                        <span>Jurídico</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="area" value="rh">
+                                    <div class="option-content">
+                                        <span>RH / Pessoas</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="area" value="operacoes">
+                                    <div class="option-content">
+                                        <span>Operações / Logística</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="area" value="design">
+                                    <div class="option-content">
+                                        <span>Design / Criativo</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="area" value="produto">
+                                    <div class="option-content">
+                                        <span>Produto / Inovação</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="area" value="outros">
+                                    <div class="option-content">
+                                        <span>Outros</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-nav">
+                            <button type="button" class="btn btn-next" onclick="nextStep(1)">
+                                Próximo
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="form-step" data-step="2">
+                        <div class="question-card">
+                            <span class="question-number">02</span>
+                            <h3 class="question-title">Quais tarefas te demandam mais tempo?</h3>
+                            <p class="question-desc">Descreva as atividades que consomem a maior parte do seu dia.</p>
+                            <div class="textarea-container">
+                                <textarea 
+                                    name="tarefas" 
+                                    id="tarefas" 
+                                    placeholder="Ex: Criar relatórios semanais, responder emails, analisar dados de vendas, redigir contratos, criar apresentações..."
+                                    required
+                                ></textarea>
+                                <div class="textarea-hint">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 16v-4M12 8h.01"/>
+                                    </svg>
+                                    Seja específico: quanto mais detalhes, melhor será a recomendação
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-nav">
+                            <button type="button" class="btn btn-back" onclick="prevStep(2)">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                                Voltar
+                            </button>
+                            <button type="button" class="btn btn-next" onclick="nextStep(2)">
+                                Próximo
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="form-step" data-step="3">
+                        <div class="question-card">
+                            <span class="question-number">03</span>
+                            <h3 class="question-title">Você já usa alguma IA para te ajudar com isso?</h3>
+                            <p class="question-desc">Conte-nos sobre sua experiência atual com ferramentas de IA.</p>
+                            <div class="radio-options">
+                                <label class="radio-option">
+                                    <input type="radio" name="usaIA" value="sim_frequente" required>
+                                    <div class="radio-content">
+                                        <div class="radio-indicator"></div>
+                                        <div class="radio-text">
+                                            <span class="radio-label">Sim, uso frequentemente</span>
+                                            <span class="radio-desc">Uso diariamente ChatGPT, Copilot ou outras ferramentas</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="usaIA" value="sim_eventual">
+                                    <div class="radio-content">
+                                        <div class="radio-indicator"></div>
+                                        <div class="radio-text">
+                                            <span class="radio-label">Sim, mas eventualmente</span>
+                                            <span class="radio-desc">Já testei algumas vezes, mas não é consistente</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="usaIA" value="nao_mas_quero">
+                                    <div class="radio-content">
+                                        <div class="radio-indicator"></div>
+                                        <div class="radio-text">
+                                            <span class="radio-label">Não, mas quero começar</span>
+                                            <span class="radio-desc">Sei que existe, mas ainda não experimentei de verdade</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="usaIA" value="empresa_tem">
+                                    <div class="radio-content">
+                                        <div class="radio-indicator"></div>
+                                        <div class="radio-text">
+                                            <span class="radio-label">Minha empresa já oferece</span>
+                                            <span class="radio-desc">Tenho acesso via empresa, mas poderia ser melhor</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-nav">
+                            <button type="button" class="btn btn-back" onclick="prevStep(3)">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                                Voltar
+                            </button>
+                            <button type="button" class="btn btn-primary btn-submit" onclick="showResults()">
+                                Ver minha recomendação
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                    <path d="M22 4L12 14.01l-3-3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Results Step -->
+                    <div class="form-step" data-step="4">
+                        <div class="results-card">
+                            <div class="results-header">
+                                <div class="results-icon">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="results-title">Sua Recomendação Personalizada</h3>
+                            </div>
+                            
+                            <div class="results-content">
+                                <div class="result-section">
+                                    <span class="result-label">Para:</span>
+                                    <p class="result-task" id="resultTask">Criar relatórios e análises de dados</p>
+                                </div>
+                                
+                                <div class="result-comparison">
+                                    <div class="result-popular">
+                                        <span class="result-badge">Mais Popular</span>
+                                        <div class="ai-card">
+                                            <div class="ai-logo" id="popularAILogo">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
+                                            </div>
+                                            <div class="ai-info">
+                                                <h4 id="popularAIName">ChatGPT</h4>
+                                                <p id="popularAIUsers">Usado por <strong>2.4 milhões</strong> de profissionais em empresas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="result-divider">
+                                        <span>vs</span>
+                                    </div>
+                                    
+                                    <div class="result-recommended">
+                                        <span class="result-badge recommended">Melhor Custo-Benefício</span>
+                                        <div class="ai-card highlight">
+                                            <div class="ai-logo" id="recommendedAILogo">
+                                                <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini">
+                                            </div>
+                                            <div class="ai-info">
+                                                <h4 id="recommendedAIName">Google Gemini Advanced</h4>
+                                                <p id="recommendedAIDesc">Integração nativa com Google Workspace, análise de documentos e planilhas com contexto empresarial</p>
+                                            </div>
+                                            <div class="ai-highlight">
+                                                <span class="highlight-tag">Recomendado para você</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="result-cta">
+                                    <div class="cta-box">
+                                        <h4>Receba o relatório completo</h4>
+                                        <p>Entenda como começar a usar essa IA na sua empresa, com guias práticos e argumentos para apresentar ao seu gestor.</p>
+                                        <div class="email-form">
+                                            <input type="email" id="emailInput" placeholder="seu@email.com" required>
+                                            <button type="button" class="btn btn-primary" onclick="submitEmail()">
+                                                Enviar relatório
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <p class="email-hint">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                                                <path d="M7 11V7a5 5 0 0110 0v4"/>
+                                            </svg>
+                                            Seus dados estão seguros. Não compartilhamos com terceiros.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-nav center">
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 4v6h6M23 20v-6h-6"/>
+                                    <path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/>
+                                </svg>
+                                Fazer novo diagnóstico
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section" id="blog">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Insights</span>
+                <h2 class="section-title">Entenda a <span class="gradient-text">revolução silenciosa</span></h2>
+                <p class="section-subtitle">
+                    Artigos aprofundados sobre como a IA está transformando o mercado — e o que você precisa saber.
+                </p>
+            </div>
+            
+            <div class="blog-grid">
+                <!-- Article 1 -->
+                <article class="blog-card">
+                    <a href="artigo-1.html" class="blog-link">
+                        <div class="blog-image">
+                            <div class="blog-gradient"></div>
+                            <span class="blog-tag">Análise de Mercado</span>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span class="read-time">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                    7 min de leitura
+                                </span>
+                            </div>
+                            <h3 class="blog-title">A Grande Ilusão da IA: Por Que 95% dos Investimentos Bilionários Estão Rendendo Retorno Zero</h3>
+                            <p class="blog-excerpt">A euforia em torno da IA Generativa levou empresas a um frenesi de investimentos. Por trás dos demos impressionantes, esconde-se uma realidade chocante.</p>
+                            <div class="blog-topics">
+                                <span>Divisão GenAI</span>
+                                <span>ROI</span>
+                                <span>Métricas</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="blog-card">
+                    <a href="artigo-2.html" class="blog-link">
+                        <div class="blog-image">
+                            <div class="blog-gradient grad-2"></div>
+                            <span class="blog-tag">Estratégia</span>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span class="read-time">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                    5 min de leitura
+                                </span>
+                            </div>
+                            <h3 class="blog-title">A Corrida Desordenada da IA: O Viés de Investimento e o "Gap de Aprendizado"</h3>
+                            <p class="blog-excerpt">A pressão para "fazer algo" com IA tem levado empresas a desperdiçar capital e perder os verdadeiros ganhos de eficiência.</p>
+                            <div class="blog-topics">
+                                <span>Learning Gap</span>
+                                <span>Build vs Buy</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="blog-card">
+                    <a href="artigo-3.html" class="blog-link">
+                        <div class="blog-image">
+                            <div class="blog-gradient grad-3"></div>
+                            <span class="blog-tag">Carreira</span>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span class="read-time">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                    5 min de leitura
+                                </span>
+                            </div>
+                            <h3 class="blog-title">Ameaça e Oportunidade: O Custo de Ficar para Trás e o Imperativo do Reskilling</h3>
+                            <p class="blog-excerpt">A janela para cruzar a Divisão GenAI está se fechando. A falta de adaptação não levará apenas à ineficiência.</p>
+                            <div class="blog-topics">
+                                <span>Reskilling</span>
+                                <span>Frontier Firms</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="blog-card">
+                    <a href="artigo-4.html" class="blog-link">
+                        <div class="blog-image">
+                            <div class="blog-gradient grad-4"></div>
+                            <span class="blog-tag">Liderança</span>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span class="read-time">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                    10 min de leitura
+                                </span>
+                            </div>
+                            <h3 class="blog-title">O Paradoxo da IA Empresarial: Por Que Bilhões em Investimento Podem Estar "Voando às Cegas"</h3>
+                            <p class="blog-excerpt">Executivos estão financiando a maior transformação da força de trabalho da história sem infraestrutura de inteligência.</p>
+                            <div class="blog-topics">
+                                <span>CIO</span>
+                                <span>Medição</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Não espere pela sua empresa.</h2>
+                <p>Enquanto decisões corporativas levam meses, você pode começar a multiplicar sua produtividade hoje.</p>
+                <a href="#diagnostico" class="btn btn-primary btn-large">
+                    Descobrir minha IA ideal
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">◈</span>
+                        <span class="logo-text">AI<span class="logo-accent">Catalyst</span></span>
+                    </a>
+                    <p>Acelerando a adoção inteligente de IA para profissionais que não querem ficar para trás.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navegação</h4>
+                        <a href="#diagnostico">Diagnóstico</a>
+                        <a href="#insights">Insights</a>
+                        <a href="#blog">Blog</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Artigos</h4>
+                        <a href="artigo-1.html">A Grande Ilusão da IA</a>
+                        <a href="artigo-2.html">A Corrida Desordenada</a>
+                        <a href="artigo-3.html">Ameaça e Oportunidade</a>
+                        <a href="artigo-4.html">O Paradoxo da IA</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AICatalyst. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                    <path d="M22 4L12 14.01l-3-3"/>
+                </svg>
+            </div>
+            <h3>Relatório enviado!</h3>
+            <p>Verifique sua caixa de entrada em alguns minutos. Você receberá um guia completo para começar a usar IA de forma estratégica.</p>
+            <button class="btn btn-primary" onclick="closeModal()">Entendido</button>
+        </div>
+    </div>
+
+    <script>
+        // Configuração dos gráficos
+        Chart.defaults.color = '#9CA3AF';
+        Chart.defaults.borderColor = '#374151';
+        Chart.defaults.font.family = "'Outfit', sans-serif";
+
+        // Gráfico 1: Descoberta - Donut Chart
+        const discoveryCtx = document.getElementById('discoveryChart');
+        if (discoveryCtx) {
+            const discoveryChart = new Chart(discoveryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Knowledge & Research', 'Writing & Communication', 'Analysis & Decision Support', 'Creative & Ideation', 'Coding & Technical Tasks', 'Admin & Ops Automation'],
+                    datasets: [{
+                        data: [28, 22, 18, 14, 12, 6],
+                        backgroundColor: [
+                            '#A78BFA',
+                            '#F59E0B',
+                            '#34D399',
+                            '#EC4899',
+                            '#3B82F6',
+                            '#6B7280'
+                        ],
+                        borderWidth: 0,
+                        spacing: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 12,
+                                color: '#9CA3AF',
+                                font: {
+                                    size: 11
+                                },
+                                boxWidth: 8,
+                                boxHeight: 8
+                            }
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    },
+                    interaction: {
+                        mode: null,
+                        intersect: false
+                    },
+                    cutout: '65%'
+                }
+            });
+            
+            // Reorganizar legenda em duas colunas após o gráfico ser renderizado
+            setTimeout(() => {
+                const chartContainer = discoveryCtx.closest('.insight-chart');
+                if (chartContainer) {
+                    // Procurar pela legenda do Chart.js
+                    const legendContainer = chartContainer.querySelector('div');
+                    if (legendContainer) {
+                        const legendList = legendContainer.querySelector('ul');
+                        if (legendList) {
+                            legendList.style.display = 'flex';
+                            legendList.style.flexWrap = 'wrap';
+                            legendList.style.maxWidth = '100%';
+                            legendList.style.justifyContent = 'center';
+                            legendList.style.padding = '0';
+                            legendList.style.margin = '12px auto 0';
+                            
+                            const legendItems = legendList.querySelectorAll('li');
+                            legendItems.forEach((item) => {
+                                item.style.flex = '0 0 50%';
+                                item.style.maxWidth = '50%';
+                                item.style.boxSizing = 'border-box';
+                                item.style.display = 'flex';
+                                item.style.alignItems = 'center';
+                                item.style.justifyContent = 'flex-start';
+                                item.style.padding = '6px 12px';
+                            });
+                        }
+                    }
+                }
+            }, 200);
+        }
+
+        // Gráfico 2: Competência - Line Chart
+        const competenceCtx = document.getElementById('competenceChart');
+        if (competenceCtx) {
+            new Chart(competenceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                    datasets: [{
+                        label: 'Finance',
+                        data: [45, 52, 48, 58, 62, 68],
+                        borderColor: '#A78BFA',
+                        backgroundColor: 'rgba(167, 139, 250, 0.1)',
+                        tension: 0.5,
+                        fill: false,
+                        pointBackgroundColor: '#A78BFA',
+                        pointBorderColor: '#1F2937',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }, {
+                        label: 'Marketing',
+                        data: [30, 38, 42, 40, 48, 52],
+                        borderColor: '#34D399',
+                        backgroundColor: 'rgba(52, 211, 153, 0.1)',
+                        tension: 0.6,
+                        fill: false,
+                        pointBackgroundColor: '#34D399',
+                        pointBorderColor: '#1F2937',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }, {
+                        label: 'Engineering',
+                        data: [20, 25, 22, 28, 32, 35],
+                        borderColor: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: false,
+                        pointBackgroundColor: '#3B82F6',
+                        pointBorderColor: '#1F2937',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    interaction: {
+                        mode: null,
+                        intersect: false
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'AI Maturity Score por Departamento',
+                            color: '#E8ECF3',
+                            font: {
+                                size: 14,
+                                weight: 600
+                            },
+                            padding: {
+                                bottom: 20
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                color: '#9CA3AF'
+                            }
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 80,
+                            grid: {
+                                color: '#374151',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#9CA3AF',
+                                stepSize: 20
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#9CA3AF'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Gráfico 3: Eficiência - Stacked Bar Chart
+        const efficiencyCtx = document.getElementById('efficiencyChart');
+        if (efficiencyCtx) {
+            new Chart(efficiencyCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sales', 'Engineering', 'Marketing', 'Finance'],
+                    datasets: [{
+                        label: 'Baixo Uso de IA',
+                        data: [2.5, 0.5, 1, 3],
+                        backgroundColor: '#F59E0B',
+                        borderWidth: 0,
+                        borderRadius: [8, 0, 0, 0]
+                    }, {
+                        label: 'Alto Uso de IA',
+                        data: [0, 7, 4.5, 6],
+                        backgroundColor: '#34D399',
+                        borderWidth: 0,
+                        borderRadius: {
+                            topLeft: 8,
+                            topRight: 8,
+                            bottomLeft: 0,
+                            bottomRight: 0
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Tempo Economizado por Semana',
+                            color: '#E8ECF3',
+                            font: {
+                                size: 14,
+                                weight: 600
+                            },
+                            padding: {
+                                bottom: 20
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                color: '#9CA3AF'
+                            }
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    },
+                    interaction: {
+                        mode: null,
+                        intersect: false
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#9CA3AF'
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            max: 12,
+                            title: {
+                                display: true,
+                                text: 'Horas',
+                                color: '#9CA3AF'
+                            },
+                            grid: {
+                                color: '#374151',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#9CA3AF',
+                                stepSize: 3
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+    
+    <!-- Parallax Effect for Fixed Orbs -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const orb1 = document.querySelector('.orb-1');
+            const orb4 = document.querySelector('.orb-4');
+            
+            if (orb1 && orb4) {
+                window.addEventListener('scroll', function() {
+                    const scrolled = window.pageYOffset;
+                    const rate = scrolled * 0.3;
+                    
+                    // Orb 1 (top right) - move slightly down and left
+                    orb1.style.transform = `translate(${rate * 0.1}px, ${rate * 0.2}px)`;
+                    
+                    // Orb 4 (bottom left) - move slightly up and right
+                    orb4.style.transform = `translate(${rate * 0.1}px, ${-rate * 0.2}px)`;
+                });
+            }
+            
+            // Fix carousel seamless loop
+            const logosTrack = document.querySelector('.logos-track');
+            if (logosTrack) {
+                // Wait for images to load
+                const logoItems = logosTrack.querySelectorAll('.logo-item');
+                const totalItems = logoItems.length;
+                const halfItems = totalItems / 2;
+                
+                function calculateAndUpdate() {
+                    // Force a reflow to ensure accurate measurements
+                    logosTrack.offsetHeight;
+                    
+                    // Get the computed gap value
+                    const trackStyle = window.getComputedStyle(logosTrack);
+                    const gap = parseFloat(trackStyle.gap) || 0;
+                    
+                    // Calculate total width of first half more precisely
+                    // Measure from the start of first item to the end of last item in first half
+                    const firstItem = logoItems[0];
+                    const lastItemInFirstHalf = logoItems[halfItems - 1];
+                    
+                    const firstItemLeft = firstItem.getBoundingClientRect().left;
+                    const lastItemRight = lastItemInFirstHalf.getBoundingClientRect().right;
+                    const trackLeft = logosTrack.getBoundingClientRect().left;
+                    
+                    // Calculate the exact distance from start of track to end of first half
+                    const firstHalfWidth = (lastItemRight - trackLeft) + gap;
+                    
+                    // Remove existing animation style if any
+                    const existingStyle = document.getElementById('carousel-animation-style');
+                    if (existingStyle) {
+                        existingStyle.remove();
+                    }
+                    
+                    // Create new style with exact pixel value and longer duration
+                    const style = document.createElement('style');
+                    style.id = 'carousel-animation-style';
+                    style.textContent = `
+                        .logos-track {
+                            animation: scroll-logos 18s linear infinite;
+                        }
+                        @keyframes scroll-logos {
+                            0% {
+                                transform: translate3d(0, 0, 0);
+                            }
+                            100% {
+                                transform: translate3d(-${firstHalfWidth}px, 0, 0);
+                            }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+                
+                // Wait for all images to load
+                const images = logosTrack.querySelectorAll('img');
+                let loadedImages = 0;
+                const totalImages = images.length;
+                
+                if (totalImages === 0) {
+                    calculateAndUpdate();
+                } else {
+                    images.forEach(img => {
+                        if (img.complete) {
+                            loadedImages++;
+                            if (loadedImages === totalImages) {
+                                setTimeout(calculateAndUpdate, 100);
+                            }
+                        } else {
+                            img.addEventListener('load', () => {
+                                loadedImages++;
+                                if (loadedImages === totalImages) {
+                                    setTimeout(calculateAndUpdate, 100);
+                                }
+                            });
+                            img.addEventListener('error', () => {
+                                loadedImages++;
+                                if (loadedImages === totalImages) {
+                                    setTimeout(calculateAndUpdate, 100);
+                                }
+                            });
+                        }
+                    });
+                }
+                
+                // Also recalculate on window resize
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(calculateAndUpdate, 250);
+                });
+            }
+        });
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
