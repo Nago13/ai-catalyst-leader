@@ -510,24 +510,12 @@ function initializeStackBuilder() {
 function setupAreaSelection() {
     const customAreaText = document.getElementById('customAreaText');
     
-    // Add click listener ONLY to cards - simple and direct
-    document.querySelectorAll('.area-card').forEach(card => {
-        card.addEventListener('click', function() {
-            const radio = this.querySelector('input[type="radio"]');
-            if (!radio) return;
-            
-            const area = radio.value;
-            
-            // Uncheck all radios
-            document.querySelectorAll('input[name="teamArea"]').forEach(r => {
-                r.checked = false;
-            });
-            
-            // Check this radio
-            radio.checked = true;
-            
-            // Update selection immediately
-            updateAreaSelection(area);
+    // Rely on natural label+radio behavior; listen to change
+    document.querySelectorAll('input[name="teamArea"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            if (this.checked) {
+                updateAreaSelection(this.value);
+            }
         });
     });
     
