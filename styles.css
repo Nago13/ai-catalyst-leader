@@ -2016,14 +2016,15 @@ img {
     transition: all var(--transition-base);
 }
 
-.area-card:hover .area-card-content {
+.area-card:hover:not(.selected) .area-card-content {
     border-color: var(--color-accent-primary);
     background: #f9fafb;
 }
 
 .area-card.selected .area-card-content {
     border-color: var(--color-accent-primary);
-    background: #f3f4f6;
+    background: rgba(139, 92, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
 .area-card svg {
@@ -2040,6 +2041,12 @@ img {
     font-size: 0.875rem;
     font-weight: 500;
     color: #374151;
+    transition: color var(--transition-base);
+}
+
+.area-card.selected span {
+    color: var(--color-accent-primary);
+    font-weight: 600;
 }
 
 .custom-area-input {

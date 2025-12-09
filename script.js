@@ -507,17 +507,35 @@ function initializeStackBuilder() {
     // Handle area selection - add listeners to both radio buttons and labels
     document.querySelectorAll('input[name="teamArea"]').forEach(radio => {
         radio.addEventListener('change', handleAreaChange);
+        
+        // Initialize visual state if radio is already checked (e.g., on page reload)
+        if (radio.checked) {
+            handleAreaChange({ target: radio });
+        }
     });
 
-    // Also add click listeners to labels for better compatibility
+    // Also add click listeners to cards for better compatibility
     document.querySelectorAll('.area-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            // Don't prevent default - let label behavior work naturally
+            // Prevent event from bubbling if clicking directly on the card
+            e.preventDefault();
+            e.stopPropagation();
+            
             const radio = card.querySelector('input[type="radio"]');
             if (radio) {
-                // Force check the radio
+                // Uncheck all other radios first
+                document.querySelectorAll('input[name="teamArea"]').forEach(r => {
+                    r.checked = false;
+                });
+                
+                // Check this radio
                 radio.checked = true;
+                
                 // Trigger change event manually
+                const changeEvent = new Event('change', { bubbles: true });
+                radio.dispatchEvent(changeEvent);
+                
+                // Also call handleAreaChange directly to ensure state is updated
                 handleAreaChange({ target: radio });
             }
         });
@@ -526,14 +544,21 @@ function initializeStackBuilder() {
 
 // Handle area change
 function handleAreaChange(e) {
-    const area = e.target.value;
+    const radio = e.target;
+    const area = radio.value;
     stackBuilderState.selectedArea = area;
     
-    // Update area cards visual state
+    // Update area cards visual state - remove selected from all
     document.querySelectorAll('.area-card').forEach(card => {
         card.classList.remove('selected');
+        const cardRadio = card.querySelector('input[type="radio"]');
+        if (cardRadio && cardRadio.checked) {
+            card.classList.add('selected');
+        }
     });
-    const selectedCard = e.target.closest('.area-card');
+    
+    // Also ensure the clicked card is marked as selected
+    const selectedCard = radio.closest('.area-card');
     if (selectedCard) {
         selectedCard.classList.add('selected');
     }
