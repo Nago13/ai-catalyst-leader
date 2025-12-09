@@ -509,13 +509,13 @@ function initializeStackBuilder() {
 // Setup area selection - simplified and robust (event delegation)
 function setupAreaSelection() {
     const customAreaText = document.getElementById('customAreaText');
+    const hiddenSelectedArea = document.getElementById('selectedAreaValue');
 
     const cards = document.querySelectorAll('.area-card');
 
     // Direct listener on each card (most reliable)
     cards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            e.preventDefault();
+        card.addEventListener('click', () => {
             const area = card.dataset.area;
             if (!area) return;
             updateAreaSelection(area);
@@ -546,12 +546,21 @@ function setupAreaSelection() {
             updateAreaSelection(firstCard.dataset.area);
         }
     }
+
+    // Se havia valor salvo no hidden, aplica
+    if (hiddenSelectedArea && hiddenSelectedArea.value) {
+        updateAreaSelection(hiddenSelectedArea.value);
+    }
 }
 
 // Update area selection visual state and logic
 function updateAreaSelection(area) {
     // Update state
     stackBuilderState.selectedArea = area;
+    const hiddenSelectedArea = document.getElementById('selectedAreaValue');
+    if (hiddenSelectedArea) {
+        hiddenSelectedArea.value = area;
+    }
 
     // Update visual state
     document.querySelectorAll('.area-card').forEach(card => {
@@ -720,12 +729,14 @@ function updateAllTeamMembers() {
 // Generate stack report
 function generateStackReport() {
     // Validate/resolve selected area
-    let selectedArea = stackBuilderState.selectedArea;
+    const hiddenSelectedArea = document.getElementById('selectedAreaValue');
+    let selectedArea = stackBuilderState.selectedArea || (hiddenSelectedArea ? hiddenSelectedArea.value : null);
     if (!selectedArea) {
         const selectedCard = document.querySelector('.area-card.selected');
         if (selectedCard) {
             selectedArea = selectedCard.dataset.area;
             stackBuilderState.selectedArea = selectedArea;
+            if (hiddenSelectedArea) hiddenSelectedArea.value = selectedArea;
         } else {
             const firstCard = document.querySelector('.area-card');
             if (firstCard) {
