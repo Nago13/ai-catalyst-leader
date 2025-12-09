@@ -506,17 +506,18 @@ function initializeStackBuilder() {
     setupAreaSelection();
 }
 
-// Setup area selection - NEW SIMPLE VERSION (no radio dependence)
+// Setup area selection - simplified and robust (event delegation)
 function setupAreaSelection() {
     const customAreaText = document.getElementById('customAreaText');
 
-    // Click directly on the card; use data-area as source of truth
-    document.querySelectorAll('.area-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const area = card.dataset.area;
-            if (!area) return;
-            updateAreaSelection(area);
-        });
+    // Event delegation: capture any click on .area-card (covers all children)
+    document.addEventListener('click', (e) => {
+        const card = e.target.closest('.area-card');
+        if (!card) return;
+        const area = card.dataset.area;
+        if (!area) return;
+        e.preventDefault();
+        updateAreaSelection(area);
     });
 
     // Custom area text input listener
