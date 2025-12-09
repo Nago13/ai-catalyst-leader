@@ -502,53 +502,70 @@ function initializeStackBuilder() {
         buildIdElement.textContent = buildId.toString().padStart(4, '0');
     }
 
-    // Team member will be added automatically when area is selected
+    // Setup area selection - NEW IMPLEMENTATION FROM SCRATCH
+    setupAreaSelection();
+}
 
-    // Handle area selection - add listeners to radio buttons
-    document.querySelectorAll('input[name="teamArea"]').forEach(radio => {
-        radio.addEventListener('change', handleAreaChange);
-        
-        // Initialize visual state if radio is already checked (e.g., on page reload)
-        if (radio.checked) {
-            handleAreaChange({ target: radio });
-        }
-    });
-
-    // Add click listeners to cards - ensure visual feedback works
-    document.querySelectorAll('.area-card').forEach(card => {
-        card.addEventListener('click', function(e) {
+// Setup area selection - NEW FUNCTION FROM SCRATCH
+function setupAreaSelection() {
+    const areaCards = document.querySelectorAll('.area-card');
+    const areaRadios = document.querySelectorAll('input[name="teamArea"]');
+    const customInput = document.getElementById('customAreaInput');
+    const customAreaText = document.getElementById('customAreaText');
+    
+    // Add click listener to each card
+    areaCards.forEach(card => {
+        card.addEventListener('click', function() {
             const radio = this.querySelector('input[type="radio"]');
-            if (radio && !radio.checked) {
-                // Check the radio (label behavior will do this, but we ensure it)
-                radio.checked = true;
-                // Trigger change event
-                handleAreaChange({ target: radio });
+            if (!radio) return;
+            
+            // Uncheck all radios
+            areaRadios.forEach(r => r.checked = false);
+            
+            // Check clicked radio
+            radio.checked = true;
+            
+            // Update visual state
+            updateAreaSelection(radio.value);
+        });
+    });
+    
+    // Add change listener to radios (for keyboard navigation)
+    areaRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.checked) {
+                updateAreaSelection(this.value);
             }
         });
     });
+    
+    // Setup custom area text input listener
+    if (customAreaText) {
+        customAreaText.addEventListener('input', function() {
+            stackBuilderState.customArea = this.value.trim();
+        });
+    }
 }
 
-// Handle area change
-function handleAreaChange(e) {
-    const radio = e.target;
-    const area = radio.value;
+// Update area selection visual state and logic
+function updateAreaSelection(area) {
+    // Update state
     stackBuilderState.selectedArea = area;
     
-    // Update area cards visual state - remove selected from all
+    // Update visual state - remove selected from all cards
     document.querySelectorAll('.area-card').forEach(card => {
         card.classList.remove('selected');
-        const cardRadio = card.querySelector('input[type="radio"]');
-        if (cardRadio && cardRadio.checked) {
-            card.classList.add('selected');
-        }
     });
     
-    // Also ensure the clicked card is marked as selected
-    const selectedCard = radio.closest('.area-card');
-    if (selectedCard) {
-        selectedCard.classList.add('selected');
+    // Add selected class to the clicked card
+    const selectedRadio = document.querySelector(`input[name="teamArea"][value="${area}"]:checked`);
+    if (selectedRadio) {
+        const selectedCard = selectedRadio.closest('.area-card');
+        if (selectedCard) {
+            selectedCard.classList.add('selected');
+        }
     }
-
+    
     // Show/hide custom area input
     const customInput = document.getElementById('customAreaInput');
     const customAreaText = document.getElementById('customAreaText');
@@ -556,7 +573,6 @@ function handleAreaChange(e) {
     if (area === 'personalizado') {
         if (customInput) {
             customInput.style.display = 'block';
-            // Focus on the input field
             setTimeout(() => {
                 if (customAreaText) {
                     customAreaText.focus();
@@ -572,16 +588,8 @@ function handleAreaChange(e) {
         }
         stackBuilderState.customArea = null;
     }
-
-    // Handle custom area input - set up listener if not already set
-    if (customAreaText && !customAreaText.dataset.listenerAdded) {
-        customAreaText.addEventListener('input', (e) => {
-            stackBuilderState.customArea = e.target.value.trim();
-        });
-        customAreaText.dataset.listenerAdded = 'true';
-    }
-
-    // If no team members exist, add one automatically
+    
+    // Add team member if none exists
     if (stackBuilderState.teamMembers.length === 0) {
         addTeamMember();
     } else {
