@@ -506,20 +506,20 @@ function initializeStackBuilder() {
     setupAreaSelection();
 }
 
-// Setup area selection - SIMPLIFIED - CLICK ONLY
+// Setup area selection - NEW SIMPLE VERSION (no radio dependence)
 function setupAreaSelection() {
     const customAreaText = document.getElementById('customAreaText');
-    
-    // Rely on natural label+radio behavior; listen to change
-    document.querySelectorAll('input[name="teamArea"]').forEach(radio => {
-        radio.addEventListener('change', function () {
-            if (this.checked) {
-                updateAreaSelection(this.value);
-            }
+
+    // Click directly on the card; use data-area as source of truth
+    document.querySelectorAll('.area-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const area = card.dataset.area;
+            if (!area) return;
+            updateAreaSelection(area);
         });
     });
-    
-    // Setup custom area text input listener
+
+    // Custom area text input listener
     if (customAreaText) {
         customAreaText.addEventListener('input', function() {
             stackBuilderState.customArea = this.value.trim();
@@ -529,31 +529,18 @@ function setupAreaSelection() {
 
 // Update area selection visual state and logic
 function updateAreaSelection(area) {
-    // Update state FIRST
+    // Update state
     stackBuilderState.selectedArea = area;
-    
-    // Find the radio and card
-    const selectedRadio = document.querySelector(`input[name="teamArea"][value="${area}"]`);
-    if (!selectedRadio) return;
-    
-    // Ensure radio is checked
-    selectedRadio.checked = true;
-    
-    // Update visual state - remove selected from all cards
+
+    // Update visual state
     document.querySelectorAll('.area-card').forEach(card => {
-        card.classList.remove('selected');
+        card.classList.toggle('selected', card.dataset.area === area);
     });
-    
-    // Add selected class to the clicked card
-    const selectedCard = selectedRadio.closest('.area-card');
-    if (selectedCard) {
-        selectedCard.classList.add('selected');
-    }
-    
+
     // Show/hide custom area input
     const customInput = document.getElementById('customAreaInput');
     const customAreaText = document.getElementById('customAreaText');
-    
+
     if (area === 'personalizado') {
         if (customInput) {
             customInput.style.display = 'block';
@@ -561,7 +548,7 @@ function updateAreaSelection(area) {
                 if (customAreaText) {
                     customAreaText.focus();
                 }
-            }, 100);
+            }, 50);
         }
     } else {
         if (customInput) {
@@ -572,7 +559,7 @@ function updateAreaSelection(area) {
         }
         stackBuilderState.customArea = null;
     }
-    
+
     // Add team member if none exists
     if (stackBuilderState.teamMembers.length === 0) {
         addTeamMember();
