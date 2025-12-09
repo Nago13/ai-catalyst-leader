@@ -512,10 +512,7 @@ function setupAreaSelection() {
     
     // Add click listener ONLY to cards - simple and direct
     document.querySelectorAll('.area-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
+        card.addEventListener('click', function() {
             const radio = this.querySelector('input[type="radio"]');
             if (!radio) return;
             

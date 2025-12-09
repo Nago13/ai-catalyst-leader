@@ -2013,6 +2013,8 @@ img {
     border-radius: var(--radius-md);
     background: #fff;
     transition: all var(--transition-base);
+    pointer-events: none;
+    position: relative;
 }
 
 .area-card.selected .area-card-content {
@@ -2025,6 +2027,7 @@ img {
     width: 32px;
     height: 32px;
     color: #6b7280;
+    pointer-events: none;
 }
 
 .area-card.selected svg {
@@ -2036,6 +2039,7 @@ img {
     font-weight: 500;
     color: #374151;
     transition: color var(--transition-base);
+    pointer-events: none;
 }
 
 .area-card.selected span {
