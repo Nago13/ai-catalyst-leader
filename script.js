@@ -504,7 +504,7 @@ function initializeStackBuilder() {
 
     // Team member will be added automatically when area is selected
 
-    // Handle area selection - add listeners to both radio buttons and labels
+    // Handle area selection - add listeners to radio buttons
     document.querySelectorAll('input[name="teamArea"]').forEach(radio => {
         radio.addEventListener('change', handleAreaChange);
         
@@ -514,28 +514,14 @@ function initializeStackBuilder() {
         }
     });
 
-    // Also add click listeners to cards for better compatibility
+    // Add click listeners to cards - ensure visual feedback works
     document.querySelectorAll('.area-card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            // Prevent event from bubbling if clicking directly on the card
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const radio = card.querySelector('input[type="radio"]');
-            if (radio) {
-                // Uncheck all other radios first
-                document.querySelectorAll('input[name="teamArea"]').forEach(r => {
-                    r.checked = false;
-                });
-                
-                // Check this radio
+        card.addEventListener('click', function(e) {
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio && !radio.checked) {
+                // Check the radio (label behavior will do this, but we ensure it)
                 radio.checked = true;
-                
-                // Trigger change event manually
-                const changeEvent = new Event('change', { bubbles: true });
-                radio.dispatchEvent(changeEvent);
-                
-                // Also call handleAreaChange directly to ensure state is updated
+                // Trigger change event
                 handleAreaChange({ target: radio });
             }
         });
@@ -565,11 +551,34 @@ function handleAreaChange(e) {
 
     // Show/hide custom area input
     const customInput = document.getElementById('customAreaInput');
+    const customAreaText = document.getElementById('customAreaText');
+    
     if (area === 'personalizado') {
-        if (customInput) customInput.style.display = 'block';
+        if (customInput) {
+            customInput.style.display = 'block';
+            // Focus on the input field
+            setTimeout(() => {
+                if (customAreaText) {
+                    customAreaText.focus();
+                }
+            }, 100);
+        }
     } else {
-        if (customInput) customInput.style.display = 'none';
+        if (customInput) {
+            customInput.style.display = 'none';
+        }
+        if (customAreaText) {
+            customAreaText.value = '';
+        }
         stackBuilderState.customArea = null;
+    }
+
+    // Handle custom area input - set up listener if not already set
+    if (customAreaText && !customAreaText.dataset.listenerAdded) {
+        customAreaText.addEventListener('input', (e) => {
+            stackBuilderState.customArea = e.target.value.trim();
+        });
+        customAreaText.dataset.listenerAdded = 'true';
     }
 
     // If no team members exist, add one automatically
@@ -578,14 +587,6 @@ function handleAreaChange(e) {
     } else {
         // Update all team members with new roles and sliders
         updateAllTeamMembers();
-    }
-
-    // Handle custom area input
-    const customAreaText = document.getElementById('customAreaText');
-    if (customAreaText) {
-        customAreaText.addEventListener('input', (e) => {
-            stackBuilderState.customArea = e.target.value;
-        });
     }
 }
 

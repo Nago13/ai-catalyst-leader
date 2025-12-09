@@ -2050,22 +2050,40 @@ img {
 }
 
 .custom-area-input {
-    margin-top: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    animation: fadeInDown 0.3s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .custom-area-input input {
     width: 100%;
-    padding: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
     border: 2px solid #e5e7eb;
     border-radius: var(--radius-md);
     font-size: 1rem;
     color: #1a1a1a;
     background: #fff;
+    transition: border-color var(--transition-base);
 }
 
 .custom-area-input input:focus {
     outline: none;
     border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.custom-area-input input::placeholder {
+    color: #9ca3af;
 }
 
 /* Team Members Section */
