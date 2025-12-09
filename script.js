@@ -502,8 +502,7 @@ function initializeStackBuilder() {
         buildIdElement.textContent = buildId.toString().padStart(4, '0');
     }
 
-    // Add first team member
-    addTeamMember();
+    // Team member will be added automatically when area is selected
 
     // Handle area selection - add listeners to both radio buttons and labels
     document.querySelectorAll('input[name="teamArea"]').forEach(radio => {
@@ -548,8 +547,13 @@ function handleAreaChange(e) {
         stackBuilderState.customArea = null;
     }
 
-    // Update all team members with new roles and sliders
-    updateAllTeamMembers();
+    // If no team members exist, add one automatically
+    if (stackBuilderState.teamMembers.length === 0) {
+        addTeamMember();
+    } else {
+        // Update all team members with new roles and sliders
+        updateAllTeamMembers();
+    }
 
     // Handle custom area input
     const customAreaText = document.getElementById('customAreaText');
