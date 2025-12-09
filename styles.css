@@ -2132,7 +2132,8 @@ img {
 
 .member-sliders {
     display: flex;
-    gap: var(--spacing-xl);
+    flex-direction: column;
+    gap: var(--spacing-lg);
     flex: 1;
 }
 
@@ -2140,7 +2141,7 @@ img {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
-    min-width: 150px;
+    width: 100%;
 }
 
 .slider-label {
