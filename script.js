@@ -526,6 +526,12 @@ function setupAreaSelection() {
             stackBuilderState.customArea = this.value.trim();
         });
     }
+
+    // Fallback: se nada selecionado, assume o primeiro card
+    const firstCard = document.querySelector('.area-card');
+    if (firstCard && !stackBuilderState.selectedArea) {
+        updateAreaSelection(firstCard.dataset.area);
+    }
 }
 
 // Update area selection visual state and logic
@@ -699,8 +705,23 @@ function updateAllTeamMembers() {
 
 // Generate stack report
 function generateStackReport() {
-    // Validate form
-    if (!stackBuilderState.selectedArea) {
+    // Validate/resolve selected area
+    let selectedArea = stackBuilderState.selectedArea;
+    if (!selectedArea) {
+        const selectedCard = document.querySelector('.area-card.selected');
+        if (selectedCard) {
+            selectedArea = selectedCard.dataset.area;
+            stackBuilderState.selectedArea = selectedArea;
+        } else {
+            const firstCard = document.querySelector('.area-card');
+            if (firstCard) {
+                selectedArea = firstCard.dataset.area;
+                updateAreaSelection(selectedArea);
+            }
+        }
+    }
+
+    if (!selectedArea) {
         alert('Por favor, selecione a área principal do time.');
         return;
     }
