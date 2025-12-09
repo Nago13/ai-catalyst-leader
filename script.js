@@ -508,33 +508,35 @@ function initializeStackBuilder() {
 
 // Setup area selection - NEW FUNCTION FROM SCRATCH
 function setupAreaSelection() {
-    const areaCards = document.querySelectorAll('.area-card');
     const areaRadios = document.querySelectorAll('input[name="teamArea"]');
-    const customInput = document.getElementById('customAreaInput');
     const customAreaText = document.getElementById('customAreaText');
     
-    // Add click listener to each card
-    areaCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const radio = this.querySelector('input[type="radio"]');
-            if (!radio) return;
-            
-            // Uncheck all radios
-            areaRadios.forEach(r => r.checked = false);
-            
-            // Check clicked radio
-            radio.checked = true;
-            
-            // Update visual state
-            updateAreaSelection(radio.value);
-        });
-    });
-    
-    // Add change listener to radios (for keyboard navigation)
+    // Add change listener to radios - this fires when label is clicked
     areaRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.checked) {
                 updateAreaSelection(this.value);
+            }
+        });
+        
+        // Also listen to click event as backup
+        radio.addEventListener('click', function() {
+            if (this.checked) {
+                updateAreaSelection(this.value);
+            }
+        });
+    });
+    
+    // Add click listener to cards to ensure selection works
+    document.querySelectorAll('.area-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) {
+                // Ensure radio is checked
+                radio.checked = true;
+                // Trigger change event
+                const changeEvent = new Event('change', { bubbles: true });
+                radio.dispatchEvent(changeEvent);
             }
         });
     });
@@ -549,16 +551,21 @@ function setupAreaSelection() {
 
 // Update area selection visual state and logic
 function updateAreaSelection(area) {
-    // Update state
+    // Update state FIRST
     stackBuilderState.selectedArea = area;
     
-    // Update visual state - remove selected from all cards
+    // Ensure the radio is checked
+    const selectedRadio = document.querySelector(`input[name="teamArea"][value="${area}"]`);
+    if (selectedRadio) {
+        selectedRadio.checked = true;
+    }
+    
+    // Update visual state - remove selected from all cards first
     document.querySelectorAll('.area-card').forEach(card => {
         card.classList.remove('selected');
     });
     
-    // Add selected class to the clicked card
-    const selectedRadio = document.querySelector(`input[name="teamArea"][value="${area}"]:checked`);
+    // Find and mark the selected card
     if (selectedRadio) {
         const selectedCard = selectedRadio.closest('.area-card');
         if (selectedCard) {
