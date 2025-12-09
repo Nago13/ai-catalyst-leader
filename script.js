@@ -510,7 +510,19 @@ function initializeStackBuilder() {
 function setupAreaSelection() {
     const customAreaText = document.getElementById('customAreaText');
 
-    // Event delegation: capture any click on .area-card (covers all children)
+    const cards = document.querySelectorAll('.area-card');
+
+    // Direct listener on each card (most reliable)
+    cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            const area = card.dataset.area;
+            if (!area) return;
+            updateAreaSelection(area);
+        });
+    });
+
+    // Event delegation: backup to catch any dynamically-added cards
     document.addEventListener('click', (e) => {
         const card = e.target.closest('.area-card');
         if (!card) return;
@@ -518,7 +530,7 @@ function setupAreaSelection() {
         if (!area) return;
         e.preventDefault();
         updateAreaSelection(area);
-    });
+    }, true);
 
     // Custom area text input listener
     if (customAreaText) {
@@ -528,9 +540,11 @@ function setupAreaSelection() {
     }
 
     // Fallback: se nada selecionado, assume o primeiro card
-    const firstCard = document.querySelector('.area-card');
-    if (firstCard && !stackBuilderState.selectedArea) {
-        updateAreaSelection(firstCard.dataset.area);
+    if (!stackBuilderState.selectedArea) {
+        const firstCard = cards[0];
+        if (firstCard && firstCard.dataset.area) {
+            updateAreaSelection(firstCard.dataset.area);
+        }
     }
 }
 
