@@ -506,38 +506,31 @@ function initializeStackBuilder() {
     setupAreaSelection();
 }
 
-// Setup area selection - NEW FUNCTION FROM SCRATCH
+// Setup area selection - SIMPLIFIED - CLICK ONLY
 function setupAreaSelection() {
-    const areaRadios = document.querySelectorAll('input[name="teamArea"]');
     const customAreaText = document.getElementById('customAreaText');
     
-    // Add change listener to radios - this fires when label is clicked
-    areaRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (this.checked) {
-                updateAreaSelection(this.value);
-            }
-        });
-        
-        // Also listen to click event as backup
-        radio.addEventListener('click', function() {
-            if (this.checked) {
-                updateAreaSelection(this.value);
-            }
-        });
-    });
-    
-    // Add click listener to cards to ensure selection works
+    // Add click listener ONLY to cards - simple and direct
     document.querySelectorAll('.area-card').forEach(card => {
         card.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             const radio = this.querySelector('input[type="radio"]');
-            if (radio) {
-                // Ensure radio is checked
-                radio.checked = true;
-                // Trigger change event
-                const changeEvent = new Event('change', { bubbles: true });
-                radio.dispatchEvent(changeEvent);
-            }
+            if (!radio) return;
+            
+            const area = radio.value;
+            
+            // Uncheck all radios
+            document.querySelectorAll('input[name="teamArea"]').forEach(r => {
+                r.checked = false;
+            });
+            
+            // Check this radio
+            radio.checked = true;
+            
+            // Update selection immediately
+            updateAreaSelection(area);
         });
     });
     
@@ -554,23 +547,22 @@ function updateAreaSelection(area) {
     // Update state FIRST
     stackBuilderState.selectedArea = area;
     
-    // Ensure the radio is checked
+    // Find the radio and card
     const selectedRadio = document.querySelector(`input[name="teamArea"][value="${area}"]`);
-    if (selectedRadio) {
-        selectedRadio.checked = true;
-    }
+    if (!selectedRadio) return;
     
-    // Update visual state - remove selected from all cards first
+    // Ensure radio is checked
+    selectedRadio.checked = true;
+    
+    // Update visual state - remove selected from all cards
     document.querySelectorAll('.area-card').forEach(card => {
         card.classList.remove('selected');
     });
     
-    // Find and mark the selected card
-    if (selectedRadio) {
-        const selectedCard = selectedRadio.closest('.area-card');
-        if (selectedCard) {
-            selectedCard.classList.add('selected');
-        }
+    // Add selected class to the clicked card
+    const selectedCard = selectedRadio.closest('.area-card');
+    if (selectedCard) {
+        selectedCard.classList.add('selected');
     }
     
     // Show/hide custom area input
