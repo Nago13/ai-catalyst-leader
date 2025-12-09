@@ -505,31 +505,51 @@ function initializeStackBuilder() {
     // Add first team member
     addTeamMember();
 
-    // Handle area selection
+    // Handle area selection - add listeners to both radio buttons and labels
     document.querySelectorAll('input[name="teamArea"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            const area = e.target.value;
-            stackBuilderState.selectedArea = area;
-            
-            // Update area cards visual state
-            document.querySelectorAll('.area-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            e.target.closest('.area-card').classList.add('selected');
+        radio.addEventListener('change', handleAreaChange);
+    });
 
-            // Show/hide custom area input
-            const customInput = document.getElementById('customAreaInput');
-            if (area === 'personalizado') {
-                customInput.style.display = 'block';
-            } else {
-                customInput.style.display = 'none';
-                stackBuilderState.customArea = null;
+    // Also add click listeners to labels for better compatibility
+    document.querySelectorAll('.area-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Don't prevent default - let label behavior work naturally
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio) {
+                // Force check the radio
+                radio.checked = true;
+                // Trigger change event manually
+                handleAreaChange({ target: radio });
             }
-
-            // Update all team members with new roles and sliders
-            updateAllTeamMembers();
         });
     });
+}
+
+// Handle area change
+function handleAreaChange(e) {
+    const area = e.target.value;
+    stackBuilderState.selectedArea = area;
+    
+    // Update area cards visual state
+    document.querySelectorAll('.area-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    const selectedCard = e.target.closest('.area-card');
+    if (selectedCard) {
+        selectedCard.classList.add('selected');
+    }
+
+    // Show/hide custom area input
+    const customInput = document.getElementById('customAreaInput');
+    if (area === 'personalizado') {
+        if (customInput) customInput.style.display = 'block';
+    } else {
+        if (customInput) customInput.style.display = 'none';
+        stackBuilderState.customArea = null;
+    }
+
+    // Update all team members with new roles and sliders
+    updateAllTeamMembers();
 
     // Handle custom area input
     const customAreaText = document.getElementById('customAreaText');
