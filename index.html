@@ -351,314 +351,170 @@
         </div>
     </section>
 
-    <!-- Diagnostic Section -->
-    <section class="diagnostic-section" id="diagnostico">
+    <!-- Stack Builder Section -->
+    <section class="stack-builder-section" id="diagnostico">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Diagnóstico Personalizado</span>
-                <h2 class="section-title">Descubra qual IA vai <span class="gradient-text">transformar</span> sua empresa</h2>
-                <p class="section-subtitle">
-                    Responda 3 perguntas rápidas e descubra as ferramentas ideais para o seu time.
-                </p>
-            </div>
-            
-            <div class="diagnostic-container">
-                <!-- Progress Bar -->
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
+            <div class="stack-builder-container">
+                <!-- Stack Builder Header -->
+                <div class="stack-builder-header">
+                    <div class="stack-builder-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                        <h2>Stack Builder</h2>
                     </div>
-                    <div class="progress-steps">
-                        <div class="progress-step active" data-step="1">1</div>
-                        <div class="progress-step" data-step="2">2</div>
-                        <div class="progress-step" data-step="3">3</div>
-                        <div class="progress-step" data-step="4">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 6L9 17l-5-5"/>
+                    <p class="stack-builder-desc">Configure seu time para análise de ROI. Construa a Stack de IA ideal baseado em análise de ROI personalizada.</p>
+                    <div class="build-id">BUILD_ID: <span id="buildId">0000</span></div>
+                </div>
+
+                <!-- Stack Builder Form -->
+                <div class="stack-builder-form" id="stackBuilderForm">
+                    <!-- Area Selection -->
+                    <div class="stack-area-selection">
+                        <h3 class="stack-section-title">Qual a área principal do Time?</h3>
+                        <div class="area-cards">
+                            <label class="area-card" data-area="marketing">
+                                <input type="radio" name="teamArea" value="marketing" required>
+                                <div class="area-card-content">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                    <span>Marketing</span>
+                                </div>
+                            </label>
+                            <label class="area-card" data-area="tecnologia">
+                                <input type="radio" name="teamArea" value="tecnologia">
+                                <div class="area-card-content">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"></path>
+                                    </svg>
+                                    <span>Tecnologia</span>
+                                </div>
+                            </label>
+                            <label class="area-card" data-area="vendas">
+                                <input type="radio" name="teamArea" value="vendas">
+                                <div class="area-card-content">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                    </svg>
+                                    <span>Vendas</span>
+                                </div>
+                            </label>
+                            <label class="area-card" data-area="financeiro">
+                                <input type="radio" name="teamArea" value="financeiro">
+                                <div class="area-card-content">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                    <span>Financeiro</span>
+                                </div>
+                            </label>
+                            <label class="area-card" data-area="personalizado">
+                                <input type="radio" name="teamArea" value="personalizado">
+                                <div class="area-card-content">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    <span>Personalizado</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="custom-area-input" id="customAreaInput" style="display: none;">
+                            <input type="text" id="customAreaText" placeholder="Digite a área personalizada">
+                        </div>
+                    </div>
+
+                    <!-- Team Members Section -->
+                    <div class="stack-members-section">
+                        <div class="stack-members-header">
+                            <h3 class="stack-section-title">Membros do Time</h3>
+                            <button type="button" class="btn-add-member" onclick="addTeamMember()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                Adicionar Membro
+                            </button>
+                        </div>
+                        <div class="team-members-list" id="teamMembersList">
+                            <!-- Team members will be added here dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Generate Report Button -->
+                    <div class="stack-generate-section">
+                        <button type="button" class="btn-generate-report" onclick="generateStackReport()">
+                            Gerar Relatório de Arquitetura
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
-                        </div>
+                        </button>
+                        <p class="generate-hint">Análise gratuita de ROI e Ferramentas.</p>
                     </div>
                 </div>
 
-                <!-- Loading Overlay -->
-                <div id="loadingOverlay" class="loading-overlay">
-                    <div class="loading-content">
-                        <div class="loading-spinner">
-                            <div class="spinner-ring"></div>
-                            <div class="spinner-ring"></div>
-                            <div class="spinner-ring"></div>
+                <!-- Results Section -->
+                <div class="stack-results" id="stackResults" style="display: none;">
+                    <div class="stack-recommended">
+                        <div class="stack-recommended-header">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"></path>
+                            </svg>
+                            <h3>Seu Stack Recomendado</h3>
                         </div>
-                        <p class="loading-text">Fazendo análise</p>
+                        <div class="stack-info-box">
+                            <p>Este stack foi selecionado com base na senioridade e foco do seu time. Ele equilibra automação com supervisão humana.</p>
+                        </div>
+                        <div class="stack-tools-grid" id="stackToolsGrid">
+                            <!-- Stack tools will be added here -->
+                        </div>
                     </div>
-                </div>
 
-                <!-- Form Steps -->
-                <form id="diagnosticForm" class="diagnostic-form">
-                    <!-- Step 1 -->
-                    <div class="form-step active" data-step="1">
-                        <div class="question-card">
-                            <span class="question-number">01</span>
-                            <h3 class="question-title">Qual é a área de atuação do seu time?</h3>
-                            <p class="question-desc">Selecione a área que a descreve melhor</p>
-                            <div class="options-grid">
-                                <label class="option-card">
-                                    <input type="radio" name="area" value="tecnologia" required>
-                                    <div class="option-content">
-                                        <span>Tecnologia / TI</span>
-                                    </div>
-                                </label>
-                                <label class="option-card">
-                                    <input type="radio" name="area" value="marketing">
-                                    <div class="option-content">
-                                        <span>Marketing / Vendas</span>
-                                    </div>
-                                </label>
-                                <label class="option-card">
-                                    <input type="radio" name="area" value="financeiro">
-                                    <div class="option-content">
-                                        <span>Financeiro / Contábil</span>
-                                    </div>
-                                </label>
-                                <label class="option-card">
-                                    <input type="radio" name="area" value="juridico">
-                                    <div class="option-content">
-                                        <span>Jurídico</span>
-                                    </div>
-                                </label>
-                                <label class="option-card">
-                                    <input type="radio" name="area" value="rh">
-                                    <div class="option-content">
-                                        <span>RH / Pessoas</span>
-                                    </div>
-                                </label>
-                                <label class="option-card">
-                                    <input type="radio" name="area" value="operacoes">
-                                    <div class="option-content">
-                                        <span>Operações / Logística</span>
-                                    </div>
-                                </label>
-                                <label class="option-card">
-                                    <input type="radio" name="area" value="design">
-                                    <div class="option-content">
-                                        <span>Design / Criativo</span>
-                                    </div>
-                                </label>
-                                <label class="option-card">
-                                    <input type="radio" name="area" value="produto">
-                                    <div class="option-content">
-                                        <span>Produto / Inovação</span>
-                                    </div>
-                                </label>
-                                <label class="option-card">
-                                    <input type="radio" name="area" value="outros">
-                                    <div class="option-content">
-                                        <span>Outros</span>
-                                    </div>
-                                </label>
+                    <div class="stack-unlock-section">
+                        <div class="stack-unlock-header">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <h3>Por que escolhemos isso?</h3>
+                        </div>
+                        <p class="stack-unlock-desc">Desbloqueie a análise detalhada de ROI, curva de aprendizado e o motivo técnico de cada escolha.</p>
+                        <div class="stack-unlock-features">
+                            <div class="unlock-feature">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 12c0-1.657 4.03-3 9-3s9 1.343 9 3"></path>
+                                    <path d="M3 12c0 1.657 4.03 3 9 3s9-1.343 9-3"></path>
+                                    <path d="M3 12h18"></path>
+                                </svg>
+                                <span>CÁLCULO DE ROI</span>
+                            </div>
+                            <div class="unlock-feature">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"></path>
+                                </svg>
+                                <span>LÓGICA TÉCNICA</span>
                             </div>
                         </div>
-                        <div class="form-nav">
-                            <button type="button" class="btn btn-next" onclick="nextStep(1)">
-                                Próximo
+                        <div class="stack-unlock-form">
+                            <input type="email" id="stackEmailInput" placeholder="Seu e-mail corporativo" required>
+                            <button type="button" class="btn-unlock-analysis" onclick="unlockStackAnalysis()">
+                                Desbloquear Análise Completa
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M5 12h14M12 5l7 7-7 7"/>
                                 </svg>
                             </button>
                         </div>
                     </div>
-
-                    <!-- Step 2 -->
-                    <div class="form-step" data-step="2">
-                        <div class="question-card">
-                            <span class="question-number">02</span>
-                            <h3 class="question-title">Quais tarefas demandam mais tempo do seu time?</h3>
-                            <p class="question-desc">Descreva as atividades que consomem a maior parte do dia.</p>
-                            <div class="textarea-container">
-                                <textarea 
-                                    name="tarefas" 
-                                    id="tarefas" 
-                                    placeholder="Ex: Criar relatórios semanais, responder emails, analisar dados de vendas, redigir contratos, criar apresentações..."
-                                    required
-                                ></textarea>
-                                <div class="textarea-hint">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <path d="M12 16v-4M12 8h.01"/>
-                                    </svg>
-                                    Seja específico: quanto mais detalhes, melhor será a recomendação
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-nav">
-                            <button type="button" class="btn btn-back" onclick="prevStep(2)">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                                </svg>
-                                Voltar
-                            </button>
-                            <button type="button" class="btn btn-next" onclick="nextStep(2)">
-                                Próximo
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3 -->
-                    <div class="form-step" data-step="3">
-                        <div class="question-card">
-                            <span class="question-number">03</span>
-                            <h3 class="question-title">Vocês já usam alguma IA para ajudar com isso?</h3>
-                            <p class="question-desc">Conte-nos sobre suas experiências atuais com ferramentas de IA.</p>
-                            <div class="radio-options">
-                                <label class="radio-option">
-                                    <input type="radio" name="usaIA" value="sim_frequente" required>
-                                    <div class="radio-content">
-                                        <div class="radio-indicator"></div>
-                                        <div class="radio-text">
-                                            <span class="radio-label">Sim, uso frequentemente</span>
-                                            <span class="radio-desc">Uso diariamente ChatGPT, Copilot ou outras ferramentas</span>
-                                        </div>
-                                    </div>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="usaIA" value="sim_eventual">
-                                    <div class="radio-content">
-                                        <div class="radio-indicator"></div>
-                                        <div class="radio-text">
-                                            <span class="radio-label">Sim, mas eventualmente</span>
-                                            <span class="radio-desc">Já testei algumas vezes, mas não é consistente</span>
-                                        </div>
-                                    </div>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="usaIA" value="nao_mas_quero">
-                                    <div class="radio-content">
-                                        <div class="radio-indicator"></div>
-                                        <div class="radio-text">
-                                            <span class="radio-label">Não, mas quero começar</span>
-                                            <span class="radio-desc">Sei que existe, mas ainda não experimentei de verdade</span>
-                                        </div>
-                                    </div>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="usaIA" value="empresa_tem">
-                                    <div class="radio-content">
-                                        <div class="radio-indicator"></div>
-                                        <div class="radio-text">
-                                            <span class="radio-label">Minha empresa já oferece</span>
-                                            <span class="radio-desc">Tenho acesso via empresa, mas poderia ser melhor</span>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-nav">
-                            <button type="button" class="btn btn-back" onclick="prevStep(3)">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                                </svg>
-                                Voltar
-                            </button>
-                            <button type="button" class="btn btn-primary btn-submit" onclick="showResults()">
-                                Ver minha recomendação
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                                    <path d="M22 4L12 14.01l-3-3"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Results Step -->
-                    <div class="form-step" data-step="4">
-                        <div class="results-card">
-                            <div class="results-header">
-                                <div class="results-icon">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="results-title">Sua Recomendação Personalizada</h3>
-                            </div>
-                            
-                            <div class="results-content">
-                                <div class="result-section">
-                                    <span class="result-label">Para:</span>
-                                    <p class="result-task" id="resultTask">Criar relatórios e análises de dados</p>
-                                </div>
-                                
-                                <div class="result-comparison">
-                                    <div class="result-popular">
-                                        <span class="result-badge">Mais Popular</span>
-                                        <div class="ai-card">
-                                            <div class="ai-logo" id="popularAILogo">
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
-                                            </div>
-                                            <div class="ai-info">
-                                                <h4 id="popularAIName">ChatGPT</h4>
-                                                <p id="popularAIUsers">Usado por <strong>2.4 milhões</strong> de profissionais em empresas</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="result-divider">
-                                        <span>vs</span>
-                                    </div>
-                                    
-                                    <div class="result-recommended">
-                                        <span class="result-badge recommended">Melhor Custo-Benefício</span>
-                                        <div class="ai-card highlight">
-                                            <div class="ai-logo" id="recommendedAILogo">
-                                                <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini">
-                                            </div>
-                                            <div class="ai-info">
-                                                <h4 id="recommendedAIName">Google Gemini Advanced</h4>
-                                                <p id="recommendedAIDesc">Integração nativa com Google Workspace, análise de documentos e planilhas com contexto empresarial</p>
-                                            </div>
-                                            <div class="ai-highlight">
-                                                <span class="highlight-tag">Recomendado para você</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="result-cta">
-                                    <div class="cta-box">
-                                        <h4>Receba o relatório completo</h4>
-                                        <p>Entenda como começar a usar essa IA na sua empresa, com guias práticos e argumentos para apresentar ao seu gestor.</p>
-                                        <div class="email-form">
-                                            <input type="email" id="emailInput" placeholder="seu@email.com" required>
-                                            <button type="button" class="btn btn-primary" onclick="submitEmail()">
-                                                Enviar relatório
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <p class="email-hint">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <rect x="3" y="11" width="18" height="11" rx="2"/>
-                                                <path d="M7 11V7a5 5 0 0110 0v4"/>
-                                            </svg>
-                                            Seus dados estão seguros. Não compartilhamos com terceiros.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-nav center">
-                            <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M1 4v6h6M23 20v-6h-6"/>
-                                    <path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/>
-                                </svg>
-                                Fazer novo diagnóstico
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </section>

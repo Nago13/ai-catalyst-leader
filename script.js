@@ -441,4 +441,322 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
+
+    // Initialize Stack Builder
+    initializeStackBuilder();
 });
+
+// ========================================
+// Stack Builder Functions
+// ========================================
+
+// Team area roles configuration
+const teamAreaRoles = {
+    marketing: ['CMO', 'Analista de SEO', 'Copywriter', 'Designer', 'Social Media', 'Growth Hacker', 'Outro'],
+    tecnologia: ['CTO', 'Dev Fullstack', 'DevOps', 'Data Scientist', 'QA Engineer', 'Product Manager', 'Outro'],
+    vendas: ['Head of Sales', 'SDR', 'Closer', 'Account Executive', 'Sales Ops', 'Outro'],
+    financeiro: ['CFO', 'Analista Financeiro', 'Controller', 'Contador', 'Auditor', 'Outro'],
+    personalizado: ['Diretor', 'Gerente', 'Analista', 'Assistente', 'Estagiário', 'Especialista', 'Outro']
+};
+
+// Team area sliders configuration
+const teamAreaSliders = {
+    marketing: [
+        { id: 'criatividade', label: 'Criatividade', min: 0, max: 100, value: 50 },
+        { id: 'foco', label: 'Foco Principal', min: 0, max: 100, value: 50 },
+        { id: 'seo', label: 'SEO/Dados', min: 0, max: 100, value: 50 }
+    ],
+    tecnologia: [
+        { id: 'senioridade', label: 'Senioridade', leftLabel: 'Jr', rightLabel: 'Sr', min: 0, max: 100, value: 50 },
+        { id: 'autonomia', label: 'Autonomia', leftLabel: 'Assistido', rightLabel: 'Agente', min: 0, max: 100, value: 50 },
+        { id: 'tecnico', label: 'Nível Técnico', leftLabel: 'NoCode', rightLabel: 'ProCode', min: 0, max: 100, value: 50 }
+    ],
+    vendas: [
+        { id: 'senioridade', label: 'Senioridade', leftLabel: 'Jr', rightLabel: 'Sr', min: 0, max: 100, value: 50 },
+        { id: 'autonomia', label: 'Autonomia', leftLabel: 'Assistido', rightLabel: 'Agente', min: 0, max: 100, value: 50 },
+        { id: 'tecnico', label: 'Nível Técnico', leftLabel: 'NoCode', rightLabel: 'ProCode', min: 0, max: 100, value: 50 }
+    ],
+    financeiro: [
+        { id: 'automacao', label: 'Automação vs Supervisão', leftLabel: 'Automação', rightLabel: 'Humano', min: 0, max: 100, value: 50 }
+    ],
+    personalizado: [
+        { id: 'senioridade', label: 'Senioridade', leftLabel: 'Jr', rightLabel: 'Sr', min: 0, max: 100, value: 50 },
+        { id: 'autonomia', label: 'Autonomia', leftLabel: 'Assistido', rightLabel: 'Agente', min: 0, max: 100, value: 50 },
+        { id: 'tecnico', label: 'Nível Técnico', leftLabel: 'NoCode', rightLabel: 'ProCode', min: 0, max: 100, value: 50 }
+    ]
+};
+
+// Stack Builder state
+let stackBuilderState = {
+    selectedArea: null,
+    customArea: null,
+    teamMembers: []
+};
+
+// Initialize Stack Builder
+function initializeStackBuilder() {
+    // Generate random BUILD_ID
+    const buildId = Math.floor(Math.random() * 10000);
+    const buildIdElement = document.getElementById('buildId');
+    if (buildIdElement) {
+        buildIdElement.textContent = buildId.toString().padStart(4, '0');
+    }
+
+    // Add first team member
+    addTeamMember();
+
+    // Handle area selection
+    document.querySelectorAll('input[name="teamArea"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const area = e.target.value;
+            stackBuilderState.selectedArea = area;
+            
+            // Update area cards visual state
+            document.querySelectorAll('.area-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            e.target.closest('.area-card').classList.add('selected');
+
+            // Show/hide custom area input
+            const customInput = document.getElementById('customAreaInput');
+            if (area === 'personalizado') {
+                customInput.style.display = 'block';
+            } else {
+                customInput.style.display = 'none';
+                stackBuilderState.customArea = null;
+            }
+
+            // Update all team members with new roles and sliders
+            updateAllTeamMembers();
+        });
+    });
+
+    // Handle custom area input
+    const customAreaText = document.getElementById('customAreaText');
+    if (customAreaText) {
+        customAreaText.addEventListener('input', (e) => {
+            stackBuilderState.customArea = e.target.value;
+        });
+    }
+}
+
+// Add team member
+function addTeamMember() {
+    const membersList = document.getElementById('teamMembersList');
+    if (!membersList) return;
+
+    const memberId = Date.now();
+    const member = {
+        id: memberId,
+        role: '',
+        sliders: {}
+    };
+    stackBuilderState.teamMembers.push(member);
+
+    const memberCard = createTeamMemberCard(memberId);
+    membersList.appendChild(memberCard);
+}
+
+// Create team member card
+function createTeamMemberCard(memberId) {
+    const area = stackBuilderState.selectedArea || 'personalizado';
+    const roles = teamAreaRoles[area] || teamAreaRoles.personalizado;
+    const sliders = teamAreaSliders[area] || teamAreaSliders.personalizado;
+
+    const card = document.createElement('div');
+    card.className = 'team-member-card';
+    card.dataset.memberId = memberId;
+
+    // Role dropdown
+    const roleSelect = document.createElement('select');
+    roleSelect.className = 'member-role-select';
+    roleSelect.innerHTML = `<option value="">Selecione um cargo...</option>`;
+    roles.forEach(role => {
+        const option = document.createElement('option');
+        option.value = role;
+        option.textContent = role;
+        roleSelect.appendChild(option);
+    });
+    roleSelect.addEventListener('change', (e) => {
+        const member = stackBuilderState.teamMembers.find(m => m.id === memberId);
+        if (member) member.role = e.target.value;
+    });
+
+    // Sliders container
+    const slidersContainer = document.createElement('div');
+    slidersContainer.className = 'member-sliders';
+
+    sliders.forEach(sliderConfig => {
+        const sliderWrapper = document.createElement('div');
+        sliderWrapper.className = 'member-slider-wrapper';
+
+        const sliderLabel = document.createElement('div');
+        sliderLabel.className = 'slider-label';
+        sliderLabel.innerHTML = `
+            <span>${sliderConfig.leftLabel || ''}</span>
+            <span class="slider-name">${sliderConfig.label}</span>
+            <span>${sliderConfig.rightLabel || ''}</span>
+        `;
+
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.className = 'member-slider';
+        slider.min = sliderConfig.min;
+        slider.max = sliderConfig.max;
+        slider.value = sliderConfig.value;
+        slider.dataset.sliderId = sliderConfig.id;
+
+        slider.addEventListener('input', (e) => {
+            const member = stackBuilderState.teamMembers.find(m => m.id === memberId);
+            if (member) {
+                member.sliders[sliderConfig.id] = parseInt(e.target.value);
+            }
+        });
+
+        // Initialize slider value
+        const member = stackBuilderState.teamMembers.find(m => m.id === memberId);
+        if (member) {
+            member.sliders[sliderConfig.id] = sliderConfig.value;
+        }
+
+        sliderWrapper.appendChild(sliderLabel);
+        sliderWrapper.appendChild(slider);
+        slidersContainer.appendChild(sliderWrapper);
+    });
+
+    // Delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'member-delete-btn';
+    deleteBtn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+    `;
+    deleteBtn.addEventListener('click', () => {
+        removeTeamMember(memberId);
+    });
+
+    card.appendChild(roleSelect);
+    card.appendChild(slidersContainer);
+    card.appendChild(deleteBtn);
+
+    return card;
+}
+
+// Remove team member
+function removeTeamMember(memberId) {
+    stackBuilderState.teamMembers = stackBuilderState.teamMembers.filter(m => m.id !== memberId);
+    const card = document.querySelector(`[data-member-id="${memberId}"]`);
+    if (card) {
+        card.remove();
+    }
+}
+
+// Update all team members when area changes
+function updateAllTeamMembers() {
+    const membersList = document.getElementById('teamMembersList');
+    if (!membersList) return;
+
+    // Clear and recreate all member cards
+    membersList.innerHTML = '';
+    stackBuilderState.teamMembers.forEach(member => {
+        const card = createTeamMemberCard(member.id);
+        membersList.appendChild(card);
+    });
+}
+
+// Generate stack report
+function generateStackReport() {
+    // Validate form
+    if (!stackBuilderState.selectedArea) {
+        alert('Por favor, selecione a área principal do time.');
+        return;
+    }
+
+    if (stackBuilderState.teamMembers.length === 0) {
+        alert('Por favor, adicione pelo menos um membro ao time.');
+        return;
+    }
+
+    // Hide form and show results
+    const form = document.getElementById('stackBuilderForm');
+    const results = document.getElementById('stackResults');
+    
+    if (form) form.style.display = 'none';
+    if (results) {
+        results.style.display = 'block';
+        displayStackResults();
+    }
+
+    // Scroll to results
+    scrollToElement('.stack-results');
+}
+
+// Display stack results
+function displayStackResults() {
+    // Sample stack tools (in real app, this would be calculated based on team configuration)
+    const stackTools = [
+        { name: 'OpenAI GPT-4o', category: 'LLM Core', compatible: true, color: '#10b981' },
+        { name: 'Perplexity', category: 'Pesquisa', compatible: true, color: '#3b82f6' },
+        { name: 'Zapier', category: 'Automação', compatible: true, color: '#f97316' },
+        { name: 'Notion AI', category: 'Knowledge', compatible: true, color: '#1e40af' }
+    ];
+
+    const toolsGrid = document.getElementById('stackToolsGrid');
+    if (!toolsGrid) return;
+
+    toolsGrid.innerHTML = '';
+
+    stackTools.forEach(tool => {
+        const toolCard = document.createElement('div');
+        toolCard.className = 'stack-tool-card';
+        
+        const initial = tool.name.charAt(0);
+        toolCard.innerHTML = `
+            <div class="tool-icon" style="background: ${tool.color}20; border-color: ${tool.color}40;">
+                <span style="color: ${tool.color};">${initial}</span>
+            </div>
+            <div class="tool-info">
+                <h4>${tool.name}</h4>
+                <p>${tool.category}</p>
+            </div>
+            <div class="tool-badge ${tool.compatible ? 'compatible' : ''}">
+                ${tool.compatible ? '✓ Compatível' : 'Incompatível'}
+            </div>
+        `;
+
+        toolsGrid.appendChild(toolCard);
+    });
+}
+
+// Unlock stack analysis
+function unlockStackAnalysis() {
+    const emailInput = document.getElementById('stackEmailInput');
+    const email = emailInput?.value.trim();
+
+    if (!email) {
+        alert('Por favor, insira seu e-mail corporativo.');
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Por favor, insira um e-mail válido.');
+        return;
+    }
+
+    // In real app, this would send data to server
+    console.log('Unlock analysis:', {
+        ...stackBuilderState,
+        email: email,
+        timestamp: new Date().toISOString()
+    });
+
+    // Show success modal
+    const successModal = document.getElementById('successModal');
+    if (successModal) {
+        successModal.classList.add('active');
+    }
+}
