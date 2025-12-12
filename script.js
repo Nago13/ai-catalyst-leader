@@ -1,4 +1,12 @@
 // ========================================
+// N8N Configuration
+// ========================================
+// Configure a URL do seu webhook do N8N aqui
+// Exemplo: 'https://seu-n8n.com/webhook/create-report'
+const N8N_WEBHOOK_URL = 'https://seu-n8n.com/webhook/create-report';
+const N8N_GET_REPORT_URL = 'https://seu-n8n.com/webhook/get-report';
+
+// ========================================
 // AI Recommendations Database
 // ========================================
 const aiRecommendations = {
@@ -116,13 +124,24 @@ const aiRecommendations = {
 // Form State Management
 // ========================================
 let currentStep = 1;
-const totalSteps = 4;
+const totalSteps = 3;
 
 // Form data storage
 const formData = {
     area: null,
+    cargo: null,
+    senioridade: 50,
+    autonomia: 50,
+    nivelTecnico: 50,
     tarefas: null,
     usaIA: null
+};
+
+const usageLabels = {
+    frequente: 'Uso frequente de IA no dia a dia',
+    eventual: 'Uso eventual, ainda explorando',
+    comecar: 'Quer começar a usar IA',
+    empresa: 'Empresa já oferece, quer otimizar'
 };
 
 // ========================================
@@ -207,7 +226,26 @@ function validateStep(step) {
 
 function saveStepData(step) {
     if (step === 1) {
-        formData.area = document.querySelector('input[name="area"]:checked').value;
+        const areaInput = document.querySelector('input[name="area"]:checked');
+        if (areaInput) {
+            formData.area = areaInput.value;
+        }
+        const cargoSelect = document.getElementById('cargo');
+        if (cargoSelect) {
+            formData.cargo = cargoSelect.value;
+        }
+        const senioridadeSlider = document.getElementById('senioridade');
+        if (senioridadeSlider) {
+            formData.senioridade = parseInt(senioridadeSlider.value, 10);
+        }
+        const autonomiaSlider = document.getElementById('autonomia');
+        if (autonomiaSlider) {
+            formData.autonomia = parseInt(autonomiaSlider.value, 10);
+        }
+        const nivelTecnicoSlider = document.getElementById('nivelTecnico');
+        if (nivelTecnicoSlider) {
+            formData.nivelTecnico = parseInt(nivelTecnicoSlider.value, 10);
+        }
     } else if (step === 2) {
         formData.tarefas = document.getElementById('tarefas').value.trim();
     } else if (step === 3) {
@@ -232,40 +270,23 @@ function showResults() {
     if (loadingOverlay) {
         loadingOverlay.classList.add('active');
     }
-    
-    // Hide current step
-    const currentStep = document.querySelector('.form-step.active');
-    if (currentStep) {
-        currentStep.classList.remove('active');
-    }
-    
-    // After 4 seconds, show results
+
+    // After a brief delay, show results
     setTimeout(() => {
-        // Generate recommendations
-        const recommendation = aiRecommendations[formData.area] || aiRecommendations.outros;
-        
-        // Update results display
-        document.getElementById('resultTask').textContent = truncateText(formData.tarefas, 100);
-        
-        // Popular AI
-        document.getElementById('popularAIName').textContent = recommendation.popular.name;
-        document.getElementById('popularAIUsers').innerHTML = `Usado por <strong>${recommendation.popular.users}</strong> de profissionais em empresas`;
-        document.getElementById('popularAILogo').innerHTML = `<img src="${recommendation.popular.logo}" alt="${recommendation.popular.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect fill=%22%233b82f6%22 width=%2224%22 height=%2224%22 rx=%224%22/><text x=%2212%22 y=%2216%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2210%22>AI</text></svg>'">`;
-        
-        // Recommended AI
-        document.getElementById('recommendedAIName').textContent = recommendation.recommended.name;
-        document.getElementById('recommendedAIDesc').textContent = recommendation.recommended.desc;
-        document.getElementById('recommendedAILogo').innerHTML = `<img src="${recommendation.recommended.logo}" alt="${recommendation.recommended.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect fill=%22%2306b6d4%22 width=%2224%22 height=%2224%22 rx=%224%22/><text x=%2212%22 y=%2216%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2210%22>AI</text></svg>'">`;
-        
+        updateStackRecommendation(formData.area);
+
         // Hide loading overlay
         if (loadingOverlay) {
             loadingOverlay.classList.remove('active');
         }
-        
-        // Show results step
-        showStep(4);
-        scrollToElement('.diagnostic-section');
-    }, 4000);
+
+        const stepsWrapper = document.getElementById('questionnaireSteps');
+        const resultsSection = document.getElementById('resultsSection');
+        if (stepsWrapper) stepsWrapper.classList.add('hidden');
+        if (resultsSection) resultsSection.classList.remove('hidden');
+
+        scrollToElement('#stack-builder');
+    }, 1200);
 }
 
 function submitEmail() {
@@ -303,16 +324,42 @@ function closeModal() {
 function resetForm() {
     // Reset form data
     formData.area = null;
+    formData.cargo = null;
+    formData.senioridade = 50;
+    formData.autonomia = 50;
+    formData.nivelTecnico = 50;
     formData.tarefas = null;
     formData.usaIA = null;
     
     // Reset form inputs
     document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+    const cargoSelect = document.getElementById('cargo');
+    if (cargoSelect) cargoSelect.value = '';
+    const senioridadeSlider = document.getElementById('senioridade');
+    if (senioridadeSlider) {
+        senioridadeSlider.value = 50;
+        updateSliderProgress('senioridade', 'senioridadeProgress');
+    }
+    const autonomiaSlider = document.getElementById('autonomia');
+    if (autonomiaSlider) {
+        autonomiaSlider.value = 50;
+        updateSliderProgress('autonomia', 'autonomiaProgress');
+    }
+    const nivelTecnicoSlider = document.getElementById('nivelTecnico');
+    if (nivelTecnicoSlider) {
+        nivelTecnicoSlider.value = 50;
+        updateSliderProgress('nivelTecnico', 'nivelTecnicoProgress');
+    }
     document.getElementById('tarefas').value = '';
+
+    const stepsWrapper = document.getElementById('questionnaireSteps');
+    const resultsSection = document.getElementById('resultsSection');
+    if (stepsWrapper) stepsWrapper.classList.remove('hidden');
+    if (resultsSection) resultsSection.classList.add('hidden');
     
     // Go back to step 1
     showStep(1);
-    scrollToElement('.diagnostic-section');
+    scrollToElement('#stack-builder');
 }
 
 // ========================================
@@ -357,11 +404,68 @@ style.textContent = `
 document.head.appendChild(style);
 
 // ========================================
+// Profile Sliders Setup
+// ========================================
+function updateSliderProgress(sliderId, progressId) {
+    const slider = document.getElementById(sliderId);
+    const progress = document.getElementById(progressId);
+    if (slider && progress) {
+        const value = parseInt(slider.value, 10);
+        const percentage = value;
+        progress.style.width = `${percentage}%`;
+    }
+}
+
+function setupProfileSliders() {
+    // Senioridade slider
+    const senioridadeSlider = document.getElementById('senioridade');
+    if (senioridadeSlider) {
+        // Inicializar progresso
+        updateSliderProgress('senioridade', 'senioridadeProgress');
+        
+        senioridadeSlider.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value, 10);
+            formData.senioridade = value;
+            updateSliderProgress('senioridade', 'senioridadeProgress');
+        });
+    }
+
+    // Autonomia slider
+    const autonomiaSlider = document.getElementById('autonomia');
+    if (autonomiaSlider) {
+        // Inicializar progresso
+        updateSliderProgress('autonomia', 'autonomiaProgress');
+        
+        autonomiaSlider.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value, 10);
+            formData.autonomia = value;
+            updateSliderProgress('autonomia', 'autonomiaProgress');
+        });
+    }
+
+    // Nível Técnico slider
+    const nivelTecnicoSlider = document.getElementById('nivelTecnico');
+    if (nivelTecnicoSlider) {
+        // Inicializar progresso
+        updateSliderProgress('nivelTecnico', 'nivelTecnicoProgress');
+        
+        nivelTecnicoSlider.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value, 10);
+            formData.nivelTecnico = value;
+            updateSliderProgress('nivelTecnico', 'nivelTecnicoProgress');
+        });
+    }
+}
+
+// ========================================
 // Event Listeners
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize progress bar
     updateProgressBar();
+    
+    // Initialize profile sliders
+    setupProfileSliders();
     
     // Add click event to option cards for immediate feedback
     document.querySelectorAll('.option-card, .radio-option').forEach(card => {
@@ -441,15 +545,11 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
-
-    // Initialize Stack Builder
-    initializeStackBuilder();
 });
 
 // ========================================
 // Stack Builder Functions
 // ========================================
-
 // Team area roles configuration
 const teamAreaRoles = {
     marketing: ['CMO', 'Analista de SEO', 'Copywriter', 'Designer', 'Social Media', 'Growth Hacker', 'Outro'],
@@ -486,116 +586,195 @@ const teamAreaSliders = {
     ]
 };
 
-// Stack Builder state
-let stackBuilderState = {
-    selectedArea: null,
-    customArea: null,
+const stackAreaMeta = {
+    marketing: { label: 'Marketing' },
+    tecnologia: { label: 'Tecnologia' },
+    vendas: { label: 'Vendas' },
+    financeiro: { label: 'Financeiro' },
+    personalizado: { label: 'Personalizado' },
+    juridico: { label: 'Jurídico' },
+    rh: { label: 'RH / Pessoas' },
+    operacoes: { label: 'Operações / Logística' },
+    design: { label: 'Design / Criativo' },
+    produto: { label: 'Produto / Inovação' },
+    outros: { label: 'Outros' }
+};
+
+const stackRecommendations = {
+    marketing: [
+        { name: 'Zapier', category: 'Automação', badge: 'Compatível', reason: 'Automatize distribuição e notificações cross-channel.', logo: 'images/zapier-logo.png' },
+        { name: 'Perplexity', category: 'Pesquisa', badge: 'Compatível', reason: 'Pesquisa rápida para benchmarks e referências.', logo: 'images/perplexity-logo.png?v=2' },
+        { name: 'OpenAI GPT-4o', category: 'LLM Core', badge: 'Compatível', reason: 'Texto, voz e visão para copy de campanhas e assets.', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
+        { name: 'Notion AI', category: 'Knowledge', badge: 'Compatível', reason: 'Fonte única para briefing, roteiros e histórico.', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    tecnologia: [
+        { name: 'Claude 3.5 Sonnet', category: 'LLM Core', badge: 'Compatível', reason: 'Contexto extenso para revisão de código e design docs.', logo: 'images/claude-logo.png?v=10' },
+        { name: 'GitHub Copilot', category: 'Assistente de Código', badge: 'Compatível', reason: 'Acelera pull requests e testes.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'LangGraph / LangChain', category: 'Orquestração', badge: 'Compatível', reason: 'Fluxos controlados e agentes com governança.', logo: 'images/langchain-logo.png' },
+        { name: 'Weights & Biases', category: 'Observabilidade', badge: 'Compatível', reason: 'Métricas de experimentos e monitoramento de modelos.', logo: 'https://raw.githubusercontent.com/wandb/assets/main/wandb-dots-logo.svg' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    vendas: [
+        { name: 'Zapier', category: 'Automação', badge: 'Compatível', reason: 'Handoff automático entre CRM, e-mail e suporte.', logo: 'images/zapier-logo.png' },
+        { name: 'Perplexity', category: 'Pesquisa', badge: 'Compatível', reason: 'Prospeção e enriquecimento de contas em tempo real.', logo: 'images/perplexity-logo.png?v=2' },
+        { name: 'OpenAI GPT-4o mini', category: 'LLM Core', badge: 'Compatível', reason: 'Respostas rápidas e econômicas para pré-venda.', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
+        { name: 'Grain / Gong', category: 'Knowledge', badge: 'Compatível', reason: 'Call intelligence e coaching com playbooks.', logo: 'https://assets.website-files.com/615c8f19ebec7b00918f0ca6/6196f5b7d04cf9611d0fafff_gong-logo.svg' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    financeiro: [
+        { name: 'Zapier', category: 'Automação', badge: 'Compatível', reason: 'Robôs para fluxos de aprovação e lançamentos.', logo: 'images/zapier-logo.png' },
+        { name: 'Perplexity', category: 'Pesquisa', badge: 'Compatível', reason: 'Busca estruturada para benchmarks e compliance.', logo: 'images/perplexity-logo.png?v=2' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Nativo em Excel e Teams para conciliações rápidas.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Notion AI', category: 'Knowledge', badge: 'Compatível', reason: 'Fonte única de políticas e trilhas de auditoria.', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    juridico: [
+        { name: 'Zapier', category: 'Automação', badge: 'Compatível', reason: 'Automatize intake e notificações de prazos.', logo: 'images/zapier-logo.png' },
+        { name: 'Perplexity', category: 'Pesquisa', badge: 'Compatível', reason: 'Pesquisa jurisprudencial com citações.', logo: 'images/perplexity-logo.png?v=2' },
+        { name: 'OpenAI GPT-4o', category: 'LLM Core', badge: 'Compatível', reason: 'Contexto amplo para análise de contratos e peças.', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
+        { name: 'Notion AI', category: 'Knowledge', badge: 'Compatível', reason: 'Repositório de cláusulas e políticas atualizadas.', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    rh: [
+        { name: 'Zapier', category: 'Automação', badge: 'Compatível', reason: 'Fluxos entre ATS, planilhas e e-mail.', logo: 'images/zapier-logo.png' },
+        { name: 'Perplexity', category: 'Pesquisa', badge: 'Compatível', reason: 'Benchmarks de cargos e políticas.', logo: 'images/perplexity-logo.png?v=2' },
+        { name: 'OpenAI GPT-4o mini', category: 'LLM Core', badge: 'Compatível', reason: 'Roteiros de entrevistas e feedback rápido.', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
+        { name: 'Notion AI', category: 'Knowledge', badge: 'Compatível', reason: 'Base viva de onboarding e playbooks.', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    operacoes: [
+        { name: 'Zapier', category: 'Automação', badge: 'Compatível', reason: 'Integra timesheets, tickets e alertas.', logo: 'images/zapier-logo.png' },
+        { name: 'Perplexity', category: 'Pesquisa', badge: 'Compatível', reason: 'Consulta rápida a políticas e SLAs.', logo: 'images/perplexity-logo.png?v=2' },
+        { name: 'OpenAI GPT-4o', category: 'LLM Core', badge: 'Compatível', reason: 'Resumos de incidentes e SOPs claros.', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
+        { name: 'Notion AI', category: 'Knowledge', badge: 'Compatível', reason: 'Documentação única para operações e logística.', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    design: [
+        { name: 'Midjourney', category: 'Imagem', badge: 'Compatível', reason: 'Exploração visual rápida para concepts.', logo: 'images/midjourney-logo.png?v=2' },
+        { name: 'Adobe Firefly', category: 'Imagem', badge: 'Compatível', reason: 'Integração direta com Creative Cloud.', logo: 'https://www.adobe.com/content/dam/cc/icons/firefly.svg' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Pitches e slides prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' },
+        { name: 'Notion AI', category: 'Knowledge', badge: 'Compatível', reason: 'Organize referências e feedbacks.', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    produto: [
+        { name: 'Zapier', category: 'Automação', badge: 'Compatível', reason: 'Automatize handoffs entre backlog e suporte.', logo: 'images/zapier-logo.png' },
+        { name: 'Perplexity', category: 'Pesquisa', badge: 'Compatível', reason: 'Pesquisa de mercado com fontes citadas.', logo: 'images/perplexity-logo.png?v=2' },
+        { name: 'Claude 3.5 Sonnet', category: 'LLM Core', badge: 'Compatível', reason: 'Contexto extenso para PRDs e discovery.', logo: 'images/claude-logo.png?v=10' },
+        { name: 'Notion AI', category: 'Knowledge', badge: 'Compatível', reason: 'Roadmaps e decisões centralizadas.', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    personalizado: [
+        { name: 'Zapier', category: 'Automação', badge: 'Compatível', reason: 'Automação leve para validar ROI rápido.', logo: 'images/zapier-logo.png' },
+        { name: 'Perplexity', category: 'Pesquisa', badge: 'Compatível', reason: 'Pesquisa factual com citações.', logo: 'images/perplexity-logo.png?v=2' },
+        { name: 'OpenAI GPT-4o', category: 'LLM Core', badge: 'Compatível', reason: 'Modelo versátil para múltiplos fluxos.', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
+        { name: 'Notion AI', category: 'Knowledge', badge: 'Compatível', reason: 'Base de conhecimento viva.', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ],
+    outros: [
+        { name: 'Zapier', category: 'Automação', badge: 'Compatível', reason: 'Automação rápida sem código.', logo: 'images/zapier-logo.png' },
+        { name: 'Perplexity', category: 'Pesquisa', badge: 'Compatível', reason: 'Busca factual com citações.', logo: 'images/perplexity-logo.png?v=2' },
+        { name: 'OpenAI GPT-4o', category: 'LLM Core', badge: 'Compatível', reason: 'Versátil para vários formatos de tarefa.', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
+        { name: 'Notion AI', category: 'Knowledge', badge: 'Compatível', reason: 'Organize conhecimento do time.', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png' },
+        { name: 'Microsoft Copilot', category: 'LLM Core', badge: 'Compatível', reason: 'Integração nativa com Office 365 e Teams.', logo: 'images/copilot-logo.jpg?v=4' },
+        { name: 'Google Gemini', category: 'LLM Core', badge: 'Compatível', reason: 'Análise multimodal e integração com Google Workspace.', logo: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+        { name: 'Canva', category: 'Design', badge: 'Compatível', reason: 'Criação visual rápida com templates profissionais.', logo: 'images/canva-logo.jpg?v=5' },
+        { name: 'Gamma', category: 'Apresentações', badge: 'Compatível', reason: 'Apresentações e documentos prontos em minutos.', logo: 'images/gamma-logo.jpg?v=4' }
+    ]
+};
+
+const stackBuilderState = {
+    selectedArea: 'marketing',
     teamMembers: []
 };
 
 // Initialize Stack Builder
 function initializeStackBuilder() {
-    // Generate random BUILD_ID
     const buildId = Math.floor(Math.random() * 10000);
     const buildIdElement = document.getElementById('buildId');
     if (buildIdElement) {
         buildIdElement.textContent = buildId.toString().padStart(4, '0');
     }
 
-    // Setup area selection - NEW IMPLEMENTATION FROM SCRATCH
     setupAreaSelection();
+
+    const addBtn = document.getElementById('addMemberBtn');
+    if (addBtn) {
+        addBtn.addEventListener('click', addTeamMember);
+    }
+
+    const generateBtn = document.getElementById('generateStackBtn');
+    if (generateBtn) {
+        generateBtn.addEventListener('click', generateStackReport);
+    }
+
+    const lockUnlockBtn = document.getElementById('stackLockUnlockBtn');
+    if (lockUnlockBtn) {
+        lockUnlockBtn.addEventListener('click', handleStackEmailSubmit);
+    }
+
+    // Start with one member to facilitar a configuração
+    addTeamMember();
 }
 
-// Setup area selection - simplified and robust (event delegation)
 function setupAreaSelection() {
-    const customAreaText = document.getElementById('customAreaText');
-    const hiddenSelectedArea = document.getElementById('selectedAreaValue');
+    const areaCards = document.querySelectorAll('.area-card');
+    if (!areaCards.length) return;
 
-    const cards = document.querySelectorAll('.area-card');
-
-    // Direct listener on each card (most reliable)
-    cards.forEach(card => {
+    areaCards.forEach(card => {
         card.addEventListener('click', () => {
             const area = card.dataset.area;
-            if (!area) return;
-            updateAreaSelection(area);
+            setSelectedArea(area);
         });
     });
 
-    // Event delegation: backup to catch any dynamically-added cards
-    document.addEventListener('click', (e) => {
-        const card = e.target.closest('.area-card');
-        if (!card) return;
-        const area = card.dataset.area;
-        if (!area) return;
-        e.preventDefault();
-        updateAreaSelection(area);
-    }, true);
-
-    // Custom area text input listener
-    if (customAreaText) {
-        customAreaText.addEventListener('input', function() {
-            stackBuilderState.customArea = this.value.trim();
-        });
-    }
-
-    // Fallback: se nada selecionado, assume o primeiro card
-    if (!stackBuilderState.selectedArea) {
-        const firstCard = cards[0];
-        if (firstCard && firstCard.dataset.area) {
-            updateAreaSelection(firstCard.dataset.area);
-        }
-    }
-
-    // Se havia valor salvo no hidden, aplica
-    if (hiddenSelectedArea && hiddenSelectedArea.value) {
-        updateAreaSelection(hiddenSelectedArea.value);
-    }
+    const defaultArea = stackBuilderState.selectedArea || areaCards[0].dataset.area;
+    setSelectedArea(defaultArea);
 }
 
-// Update area selection visual state and logic
-function updateAreaSelection(area) {
-    // Update state
+function setSelectedArea(area) {
     stackBuilderState.selectedArea = area;
-    const hiddenSelectedArea = document.getElementById('selectedAreaValue');
-    if (hiddenSelectedArea) {
-        hiddenSelectedArea.value = area;
-    }
 
-    // Update visual state
     document.querySelectorAll('.area-card').forEach(card => {
-        card.classList.toggle('selected', card.dataset.area === area);
+        card.classList.toggle('active', card.dataset.area === area);
     });
 
-    // Show/hide custom area input
-    const customInput = document.getElementById('customAreaInput');
-    const customAreaText = document.getElementById('customAreaText');
+    updateAllTeamMembers();
 
-    if (area === 'personalizado') {
-        if (customInput) {
-            customInput.style.display = 'block';
-            setTimeout(() => {
-                if (customAreaText) {
-                    customAreaText.focus();
-                }
-            }, 50);
-        }
-    } else {
-        if (customInput) {
-            customInput.style.display = 'none';
-        }
-        if (customAreaText) {
-            customAreaText.value = '';
-        }
-        stackBuilderState.customArea = null;
-    }
-
-    // Add team member if none exists
-    if (stackBuilderState.teamMembers.length === 0) {
-        addTeamMember();
-    } else {
-        // Update all team members with new roles and sliders
-        updateAllTeamMembers();
+    const note = document.getElementById('stackRecommendationNote');
+    if (note) {
+        const label = stackAreaMeta[area]?.label || 'Personalizado';
+        note.textContent = `Stack baseada na área de ${label}. Ajuste os membros para refinar a arquitetura.`;
     }
 }
 
@@ -604,7 +783,12 @@ function addTeamMember() {
     const membersList = document.getElementById('teamMembersList');
     if (!membersList) return;
 
-    const memberId = Date.now();
+    const placeholder = document.getElementById('teamMembersPlaceholder');
+    if (placeholder) {
+        placeholder.remove();
+    }
+
+    const memberId = Date.now() + Math.random();
     const member = {
         id: memberId,
         role: '',
@@ -612,12 +796,12 @@ function addTeamMember() {
     };
     stackBuilderState.teamMembers.push(member);
 
-    const memberCard = createTeamMemberCard(memberId);
+    const memberCard = createTeamMemberCard(memberId, member);
     membersList.appendChild(memberCard);
 }
 
 // Create team member card
-function createTeamMemberCard(memberId) {
+function createTeamMemberCard(memberId, existingMember) {
     const area = stackBuilderState.selectedArea || 'personalizado';
     const roles = teamAreaRoles[area] || teamAreaRoles.personalizado;
     const sliders = teamAreaSliders[area] || teamAreaSliders.personalizado;
@@ -625,6 +809,8 @@ function createTeamMemberCard(memberId) {
     const card = document.createElement('div');
     card.className = 'team-member-card';
     card.dataset.memberId = memberId;
+
+    const member = existingMember || stackBuilderState.teamMembers.find(m => m.id === memberId);
 
     // Role dropdown
     const roleSelect = document.createElement('select');
@@ -636,9 +822,12 @@ function createTeamMemberCard(memberId) {
         option.textContent = role;
         roleSelect.appendChild(option);
     });
+    if (member?.role) {
+        roleSelect.value = member.role;
+    }
     roleSelect.addEventListener('change', (e) => {
-        const member = stackBuilderState.teamMembers.find(m => m.id === memberId);
-        if (member) member.role = e.target.value;
+        const localMember = stackBuilderState.teamMembers.find(m => m.id === memberId);
+        if (localMember) localMember.role = e.target.value;
     });
 
     // Sliders container
@@ -657,29 +846,35 @@ function createTeamMemberCard(memberId) {
             <span>${sliderConfig.rightLabel || ''}</span>
         `;
 
+        const sliderValue = document.createElement('span');
+        sliderValue.className = 'slider-value';
+        sliderValue.textContent = member?.sliders?.[sliderConfig.id] ?? sliderConfig.value;
+
         const slider = document.createElement('input');
         slider.type = 'range';
         slider.className = 'member-slider';
         slider.min = sliderConfig.min;
         slider.max = sliderConfig.max;
-        slider.value = sliderConfig.value;
+        slider.value = member?.sliders?.[sliderConfig.id] ?? sliderConfig.value;
         slider.dataset.sliderId = sliderConfig.id;
 
         slider.addEventListener('input', (e) => {
-            const member = stackBuilderState.teamMembers.find(m => m.id === memberId);
-            if (member) {
-                member.sliders[sliderConfig.id] = parseInt(e.target.value);
+            const localMember = stackBuilderState.teamMembers.find(m => m.id === memberId);
+            if (localMember) {
+                localMember.sliders[sliderConfig.id] = parseInt(e.target.value, 10);
+                sliderValue.textContent = e.target.value;
             }
         });
 
         // Initialize slider value
-        const member = stackBuilderState.teamMembers.find(m => m.id === memberId);
-        if (member) {
-            member.sliders[sliderConfig.id] = sliderConfig.value;
+        const localMember = stackBuilderState.teamMembers.find(m => m.id === memberId);
+        if (localMember) {
+            localMember.sliders[sliderConfig.id] = slider.valueAsNumber;
         }
 
         sliderWrapper.appendChild(sliderLabel);
         sliderWrapper.appendChild(slider);
+        sliderWrapper.appendChild(sliderValue);
         slidersContainer.appendChild(sliderWrapper);
     });
 
@@ -711,6 +906,14 @@ function removeTeamMember(memberId) {
     if (card) {
         card.remove();
     }
+
+    if (!stackBuilderState.teamMembers.length) {
+        const membersList = document.getElementById('teamMembersList');
+        if (membersList) {
+            membersList.innerHTML = '';
+            membersList.appendChild(createMembersPlaceholder());
+        }
+    }
 }
 
 // Update all team members when area changes
@@ -718,121 +921,273 @@ function updateAllTeamMembers() {
     const membersList = document.getElementById('teamMembersList');
     if (!membersList) return;
 
-    // Clear and recreate all member cards
     membersList.innerHTML = '';
+
+    if (!stackBuilderState.teamMembers.length) {
+        membersList.appendChild(createMembersPlaceholder());
+        return;
+    }
+
     stackBuilderState.teamMembers.forEach(member => {
-        const card = createTeamMemberCard(member.id);
+        const card = createTeamMemberCard(member.id, member);
         membersList.appendChild(card);
     });
 }
 
-// Generate stack report
-function generateStackReport() {
-    // Validate/resolve selected area
-    const hiddenSelectedArea = document.getElementById('selectedAreaValue');
-    let selectedArea = stackBuilderState.selectedArea || (hiddenSelectedArea ? hiddenSelectedArea.value : null);
-    if (!selectedArea) {
-        const selectedCard = document.querySelector('.area-card.selected');
-        if (selectedCard) {
-            selectedArea = selectedCard.dataset.area;
-            stackBuilderState.selectedArea = selectedArea;
-            if (hiddenSelectedArea) hiddenSelectedArea.value = selectedArea;
-        } else {
-            const firstCard = document.querySelector('.area-card');
-            if (firstCard) {
-                selectedArea = firstCard.dataset.area;
-                updateAreaSelection(selectedArea);
-            }
-        }
-    }
-
-    if (!selectedArea) {
-        alert('Por favor, selecione a área principal do time.');
-        return;
-    }
-
-    if (stackBuilderState.teamMembers.length === 0) {
-        alert('Por favor, adicione pelo menos um membro ao time.');
-        return;
-    }
-
-    // Hide form and show results
-    const form = document.getElementById('stackBuilderForm');
-    const results = document.getElementById('stackResults');
-    
-    if (form) form.style.display = 'none';
-    if (results) {
-        results.style.display = 'block';
-        displayStackResults();
-    }
-
-    // Scroll to results
-    scrollToElement('.stack-results');
+function createMembersPlaceholder() {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'team-members-placeholder';
+    placeholder.id = 'teamMembersPlaceholder';
+    placeholder.innerHTML = `
+        <div class="placeholder-icon">✦</div>
+        <p>Nenhum membro adicionado. Adicione alguém para configurar.</p>
+    `;
+    return placeholder;
 }
 
-// Display stack results
-function displayStackResults() {
-    // Sample stack tools (in real app, this would be calculated based on team configuration)
-    const stackTools = [
-        { name: 'OpenAI GPT-4o', category: 'LLM Core', compatible: true, color: '#10b981' },
-        { name: 'Perplexity', category: 'Pesquisa', compatible: true, color: '#3b82f6' },
-        { name: 'Zapier', category: 'Automação', compatible: true, color: '#f97316' },
-        { name: 'Notion AI', category: 'Knowledge', compatible: true, color: '#1e40af' }
-    ];
+function generateStackReport() {
+    const area = stackBuilderState.selectedArea;
+    if (!area) {
+        shakeElement('.area-cards');
+        return;
+    }
 
-    const toolsGrid = document.getElementById('stackToolsGrid');
-    if (!toolsGrid) return;
+    if (!stackBuilderState.teamMembers.length) {
+        shakeElement('#teamMembersList');
+        return;
+    }
 
-    toolsGrid.innerHTML = '';
+    const allRolesSelected = stackBuilderState.teamMembers.every(member => member.role);
+    if (!allRolesSelected) {
+        shakeElement('#teamMembersList');
+        return;
+    }
 
-    stackTools.forEach(tool => {
-        const toolCard = document.createElement('div');
-        toolCard.className = 'stack-tool-card';
-        
-        const initial = tool.name.charAt(0);
-        toolCard.innerHTML = `
-            <div class="tool-icon" style="background: ${tool.color}20; border-color: ${tool.color}40;">
-                <span style="color: ${tool.color};">${initial}</span>
+    const sliderStats = getSliderStats();
+    renderStackSummary(area, sliderStats);
+    const stack = stackRecommendations[area] || stackRecommendations.personalizado;
+    renderStackCards(stack);
+
+    const section = document.getElementById('stackRecommendation');
+    if (section) {
+        section.classList.remove('hidden');
+    }
+    scrollToElement('#stackRecommendation');
+}
+
+function renderStackCards(cards) {
+    const container = document.getElementById('stackCards');
+    if (!container) return;
+    container.innerHTML = '';
+
+    cards.forEach((cardInfo, index) => {
+        const iconContent = cardInfo.logo
+            ? `<img src="${cardInfo.logo}" alt="${cardInfo.name}" onerror="this.style.display='none';this.parentElement.textContent='${cardInfo.icon || cardInfo.name?.[0] || 'AI'}';">`
+            : (cardInfo.icon || cardInfo.name?.[0] || 'AI');
+
+        const card = document.createElement('div');
+        card.className = 'stack-tool-card';
+        if (index >= 4) {
+            card.classList.add('locked');
+        }
+        card.innerHTML = `
+            <div class="stack-tool-head">
+                <div class="stack-tool-icon">${iconContent}</div>
+                <span class="stack-pill">${cardInfo.badge || 'Compatível'}</span>
             </div>
-            <div class="tool-info">
-                <h4>${tool.name}</h4>
-                <p>${tool.category}</p>
-            </div>
-            <div class="tool-badge ${tool.compatible ? 'compatible' : ''}">
-                ${tool.compatible ? '✓ Compatível' : 'Incompatível'}
+            <div class="stack-tool-info">
+                <p class="stack-tool-category">${cardInfo.category}</p>
+                <h4>${cardInfo.name}</h4>
+                <p class="stack-tool-reason">${cardInfo.reason}</p>
             </div>
         `;
-
-        toolsGrid.appendChild(toolCard);
+        container.appendChild(card);
     });
 }
 
-// Unlock stack analysis
-function unlockStackAnalysis() {
-    const emailInput = document.getElementById('stackEmailInput');
-    const email = emailInput?.value.trim();
+function updateStackRecommendation(area) {
+    const stack = stackRecommendations[area] || stackRecommendations.personalizado;
+    const areaLabel = stackAreaMeta[area]?.label || stackAreaMeta.personalizado.label;
+    const usageText = usageLabels[formData.usaIA] || 'Começando com IA';
 
-    if (!email) {
-        alert('Por favor, insira seu e-mail corporativo.');
+    const areaEl = document.getElementById('stackSummaryArea');
+    const tasksEl = document.getElementById('stackSummaryMembers');
+    const focusEl = document.getElementById('stackSummaryFocus');
+    const noteEl = document.getElementById('stackRecommendationNote');
+
+    if (areaEl) areaEl.textContent = `Área: ${areaLabel}`;
+    if (tasksEl) tasksEl.textContent = `Tarefas: ${truncateText(formData.tarefas, 120)}`;
+    if (noteEl) noteEl.textContent = `Stack baseada na área de ${areaLabel}.`;
+
+    if (focusEl) {
+        focusEl.innerHTML = '';
+        const chip = document.createElement('span');
+        chip.className = 'focus-chip';
+        chip.textContent = usageText;
+        focusEl.appendChild(chip);
+    }
+
+    renderStackCards(stack);
+}
+
+function getSliderStats() {
+    const stats = {};
+    stackBuilderState.teamMembers.forEach(member => {
+        Object.entries(member.sliders || {}).forEach(([id, value]) => {
+            if (!stats[id]) {
+                stats[id] = { sum: 0, count: 0 };
+            }
+            stats[id].sum += value;
+            stats[id].count += 1;
+        });
+    });
+    return stats;
+}
+
+function renderStackSummary(area, sliderStats) {
+    const areaEl = document.getElementById('stackSummaryArea');
+    const membersEl = document.getElementById('stackSummaryMembers');
+    const focusEl = document.getElementById('stackSummaryFocus');
+    if (!areaEl || !membersEl || !focusEl) return;
+
+    const areaLabel = stackAreaMeta[area]?.label || 'Personalizado';
+    const roles = stackBuilderState.teamMembers.map(m => m.role).filter(Boolean);
+
+    areaEl.textContent = `Área: ${areaLabel}`;
+    membersEl.textContent = `${roles.length} membro(s): ${roles.join(', ')}`;
+
+    focusEl.innerHTML = '';
+
+    const slidersSorted = Object.entries(sliderStats)
+        .map(([id, { sum, count }]) => ({ id, avg: Math.round(sum / count) }))
+        .sort((a, b) => b.avg - a.avg)
+        .slice(0, 3);
+
+    if (!slidersSorted.length) {
+        const chip = document.createElement('span');
+        chip.className = 'focus-chip';
+        chip.textContent = 'Ajuste os sliders para ver o foco';
+        focusEl.appendChild(chip);
         return;
     }
+
+    slidersSorted.forEach(item => {
+        const label = findSliderLabel(item.id, area);
+        const chip = document.createElement('span');
+        chip.className = 'focus-chip';
+        chip.textContent = `${label}: ${item.avg}%`;
+        focusEl.appendChild(chip);
+    });
+}
+
+function findSliderLabel(id, area) {
+    const sliders = teamAreaSliders[area] || teamAreaSliders.personalizado;
+    const slider = sliders.find(s => s.id === id);
+    return slider?.label || id;
+}
+
+function handleStackEmailSubmit() {
+    const emailInputLock = document.getElementById('stackLockEmail');
+    const email = emailInputLock?.value?.trim() || '';
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Por favor, insira um e-mail válido.');
+    if (!email || !emailRegex.test(email)) {
+        shakeElement('.stack-lock-form');
+        emailInputLock?.focus();
         return;
     }
 
-    // In real app, this would send data to server
-    console.log('Unlock analysis:', {
-        ...stackBuilderState,
+    // Preparar todos os dados do formulário
+    const fullData = {
         email: email,
-        timestamp: new Date().toISOString()
-    });
+        area: formData.area,
+        cargo: formData.cargo,
+        senioridade: formData.senioridade,
+        autonomia: formData.autonomia,
+        nivelTecnico: formData.nivelTecnico,
+        tarefas: formData.tarefas,
+        usaIA: formData.usaIA,
+        stackRecommendation: getCurrentStackRecommendation()
+    };
 
-    // Show success modal
-    const successModal = document.getElementById('successModal');
-    if (successModal) {
-        successModal.classList.add('active');
+    // Mostrar loading
+    const unlockBtn = document.getElementById('stackLockUnlockBtn');
+    if (unlockBtn) {
+        unlockBtn.disabled = true;
+        unlockBtn.textContent = 'Gerando relatório...';
+    }
+
+    // Enviar para o N8N
+    createUserPage(fullData);
+}
+
+function getCurrentStackRecommendation() {
+    const stackCards = document.querySelectorAll('.stack-tool-card:not(.locked)');
+    const stack = [];
+    
+    stackCards.forEach(card => {
+        const name = card.querySelector('h4')?.textContent || '';
+        const category = card.querySelector('.stack-tool-category')?.textContent || '';
+        const reason = card.querySelector('.stack-tool-reason')?.textContent || '';
+        const logoImg = card.querySelector('.stack-tool-icon img');
+        const logo = logoImg ? logoImg.src : '';
+        const badge = card.querySelector('.stack-pill')?.textContent || '';
+        
+        stack.push({ name, category, reason, logo, badge });
+    });
+    
+    return stack;
+}
+
+async function createUserPage(data) {
+    try {
+        // Se não tiver N8N configurado ainda, usar fallback
+        if (N8N_WEBHOOK_URL.includes('seu-n8n.com')) {
+            console.warn('N8N webhook não configurado. Configure a URL em script.js');
+            // Fallback: mostrar modal de sucesso
+            document.getElementById('successModal').classList.add('active');
+            const emailInputLock = document.getElementById('stackLockEmail');
+            if (emailInputLock) emailInputLock.value = '';
+            const unlockBtn = document.getElementById('stackLockUnlockBtn');
+            if (unlockBtn) {
+                unlockBtn.disabled = false;
+                unlockBtn.textContent = 'Desbloquear';
+            }
+            return;
+        }
+        
+        const response = await fetch(N8N_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            
+            // Redirecionar para a nova página
+            if (result.url) {
+                window.location.href = result.url;
+            } else if (result.slug) {
+                window.location.href = `relatorio.html?slug=${result.slug}`;
+            } else {
+                // Fallback
+                document.getElementById('successModal').classList.add('active');
+                const emailInputLock = document.getElementById('stackLockEmail');
+                if (emailInputLock) emailInputLock.value = '';
+            }
+        } else {
+            throw new Error('Erro ao criar relatório');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao gerar relatório. Tente novamente.');
+        const unlockBtn = document.getElementById('stackLockUnlockBtn');
+        if (unlockBtn) {
+            unlockBtn.disabled = false;
+            unlockBtn.textContent = 'Desbloquear';
+        }
     }
 }

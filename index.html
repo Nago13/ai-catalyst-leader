@@ -26,7 +26,7 @@
                 <span class="logo-text">AI<span class="logo-accent">Catalyst</span></span>
             </a>
             <div class="nav-links">
-                <a href="#diagnostico">Diagnóstico</a>
+                <a href="#insights">Insights</a>
                 <a href="#insights">Insights</a>
                 <a href="#blog">Blog</a>
             </div>
@@ -57,7 +57,7 @@
                 <strong>você pode assumir o controle</strong> da sua produtividade hoje.
             </p>
             <div class="hero-cta">
-                <a href="#diagnostico" class="btn btn-primary">
+                <a href="#insights" class="btn btn-primary">
                     <span>Descobrir minha IA ideal</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -87,6 +87,364 @@
             <div class="scroll-arrow"></div>
         </div>
     </header>
+
+    <!-- Stack Builder Section -->
+    <section class="stack-builder-section" id="stack-builder">
+        <div class="container">
+            <div class="stack-builder-header">
+                <div>
+                    <p class="stack-eyebrow">Stack Builder</p>
+                    <h2>Responda 3 perguntas para gerar sua recomendação</h2>
+                    <p class="stack-subtitle">Questionário simples inspirado no fluxo das telas: área, tarefas que mais tomam tempo e nível de uso de IA.</p>
+                </div>
+                <div class="build-pill">
+                    <span>BUILD_ID:</span>
+                    <strong id="buildId">0000</strong>
+                </div>
+            </div>
+
+            <div class="diagnostic-container" id="questionnaireSteps">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="progress-step active">1</div>
+                        <div class="progress-step">2</div>
+                        <div class="progress-step">3</div>
+                    </div>
+                </div>
+
+                <div class="form-step active" data-step="1">
+                    <div class="question-card">
+                        <span class="question-number">01</span>
+                        <h3 class="question-title">Qual é a sua área de atuação?</h3>
+                        <p class="question-desc">Use o cenário que melhor representa a atuação do seu time hoje.</p>
+                        <div class="options-grid">
+                            <label class="option-card">
+                                <input type="radio" name="area" value="tecnologia">
+                                <div class="option-content"><span>Tecnologia / TI</span></div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="area" value="marketing">
+                                <div class="option-content"><span>Marketing / Vendas</span></div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="area" value="financeiro">
+                                <div class="option-content"><span>Financeiro / Contábil</span></div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="area" value="juridico">
+                                <div class="option-content"><span>Jurídico</span></div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="area" value="rh">
+                                <div class="option-content"><span>RH / Pessoas</span></div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="area" value="operacoes">
+                                <div class="option-content"><span>Operações / Logística</span></div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="area" value="design">
+                                <div class="option-content"><span>Design / Criativo</span></div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="area" value="produto">
+                                <div class="option-content"><span>Produto / Inovação</span></div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="area" value="outros">
+                                <div class="option-content"><span>Outros</span></div>
+                            </label>
+                        </div>
+                        
+                        <div class="profile-section" style="margin-top: var(--spacing-2xl);">
+                            <label class="profile-label">CARGO / FUNÇÃO</label>
+                            <select id="cargo" class="profile-select">
+                                <option value="">Selecione um cargo...</option>
+                                <option value="Diretor">Diretor</option>
+                                <option value="Gerente">Gerente</option>
+                                <option value="Coordenador">Coordenador</option>
+                                <option value="Analista">Analista</option>
+                                <option value="Especialista">Especialista</option>
+                                <option value="Assistente">Assistente</option>
+                                <option value="Estagiário">Estagiário</option>
+                                <option value="Consultor">Consultor</option>
+                                <option value="Freelancer">Freelancer</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="profile-sliders-section" style="margin-top: var(--spacing-2xl);">
+                            <div class="profile-slider-wrapper">
+                                <span class="profile-slider-label">Senioridade</span>
+                                <div class="profile-slider-labels">
+                                    <span>Jr</span>
+                                    <span>Sr</span>
+                                </div>
+                                <div class="profile-slider-container">
+                                    <div class="profile-slider-progress" id="senioridadeProgress"></div>
+                                    <input type="range" id="senioridade" class="profile-slider" min="0" max="100" value="50">
+                                </div>
+                            </div>
+
+                            <div class="profile-slider-wrapper">
+                                <span class="profile-slider-label">Autonomia</span>
+                                <div class="profile-slider-labels">
+                                    <span>Assistido</span>
+                                    <span>Agente</span>
+                                </div>
+                                <div class="profile-slider-container">
+                                    <div class="profile-slider-progress" id="autonomiaProgress"></div>
+                                    <input type="range" id="autonomia" class="profile-slider" min="0" max="100" value="50">
+                                </div>
+                            </div>
+
+                            <div class="profile-slider-wrapper">
+                                <span class="profile-slider-label">Nível Técnico</span>
+                                <div class="profile-slider-labels">
+                                    <span>NoCode</span>
+                                    <span>ProCode</span>
+                                </div>
+                                <div class="profile-slider-container">
+                                    <div class="profile-slider-progress" id="nivelTecnicoProgress"></div>
+                                    <input type="range" id="nivelTecnico" class="profile-slider" min="0" max="100" value="50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-nav">
+                        <button class="btn btn-primary btn-next" onclick="nextStep(1)">Próximo</button>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="2">
+                    <div class="question-card">
+                        <span class="question-number">02</span>
+                        <h3 class="question-title">Quais tarefas te travam ou tomam mais tempo?</h3>
+                        <p class="question-desc">Detalhe as atividades para mostrarmos impacto direto e horas economizadas.</p>
+                        <div class="textarea-container">
+                            <textarea id="tarefas" placeholder="Ex: Criar relatórios semanais, responder emails, analisar dados de vendas, redigir contratos, criar apresentações..."></textarea>
+                            <div class="textarea-hint">
+                                <span>⏱️ Seja específico: quanto mais detalhes, melhor será a recomendação</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-nav">
+                        <button class="btn btn-secondary btn-back" onclick="prevStep(2)">Voltar</button>
+                        <button class="btn btn-primary btn-next" onclick="nextStep(2)">Próximo</button>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="3">
+                    <div class="question-card">
+                        <span class="question-number">03</span>
+                        <h3 class="question-title">Você já usa alguma IA para te ajudar com isso?</h3>
+                        <p class="question-desc">Isso nos ajuda a sugerir planos, limites e argumentos de segurança para seu gestor.</p>
+                        <div class="radio-options">
+                            <label class="radio-option">
+                                <input type="radio" name="usaIA" value="frequente">
+                                <div class="radio-content">
+                                    <span class="radio-indicator"></span>
+                                    <div class="radio-text">
+                                        <span class="radio-label">Sim, uso frequentemente</span>
+                                        <span class="radio-desc">Uso diariamente ChatGPT, Copilot ou outras ferramentas</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="usaIA" value="eventual">
+                                <div class="radio-content">
+                                    <span class="radio-indicator"></span>
+                                    <div class="radio-text">
+                                        <span class="radio-label">Sim, mas eventualmente</span>
+                                        <span class="radio-desc">Já testei algumas vezes, mas não é consistente</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="usaIA" value="comecar">
+                                <div class="radio-content">
+                                    <span class="radio-indicator"></span>
+                                    <div class="radio-text">
+                                        <span class="radio-label">Não, mas quero começar</span>
+                                        <span class="radio-desc">Sei que existe, mas ainda não experimentei de verdade</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="usaIA" value="empresa">
+                                <div class="radio-content">
+                                    <span class="radio-indicator"></span>
+                                    <div class="radio-text">
+                                        <span class="radio-label">Minha empresa já oferece</span>
+                                        <span class="radio-desc">Tenho acesso via empresa, mas poderia ser melhor</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-nav">
+                        <button class="btn btn-secondary btn-back" onclick="prevStep(3)">Voltar</button>
+                        <button class="btn btn-primary btn-submit" onclick="showResults()">Ver minha recomendação</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-content">
+                    <div class="loading-spinner">
+                        <div class="spinner-ring"></div>
+                        <div class="spinner-ring"></div>
+                        <div class="spinner-ring"></div>
+                    </div>
+                    <p class="loading-text">Gerando seu stack recomendado...</p>
+                </div>
+            </div>
+
+            <div id="resultsSection" class="hidden">
+                <div id="stackRecommendation" class="stack-recommendation">
+                    <div class="stack-recommendation-header">
+                        <div>
+                            <p class="stack-eyebrow">Seu Stack Recomendado</p>
+                            <h3>Arquitetura sugerida para o time</h3>
+                            <p class="stack-subtitle" id="stackRecommendationNote">Baseado nas respostas do questionário.</p>
+                        </div>
+                    </div>
+                    <div class="stack-summary" id="stackSummary" aria-live="polite">
+                        <div class="stack-summary-badges">
+                            <span class="summary-pill" id="stackSummaryArea"></span>
+                            <span class="summary-pill" id="stackSummaryMembers"></span>
+                        </div>
+                        <div class="stack-summary-focus" id="stackSummaryFocus"></div>
+                    </div>
+                    <div class="stack-tools-wrapper">
+                        <div class="stack-tools-grid" id="stackCards"></div>
+                        <div class="stack-lock-cover" id="stackLockCover">
+                            <div class="stack-lock-card">
+                                <div class="stack-lock-icon">🔒</div>
+                                <h4>Desbloquear análise completa</h4>
+                                <p>Veja o detalhamento de ROI, curva de aprendizado e lógica técnica de cada escolha.</p>
+                                <div class="stack-lock-pills">
+                                    <span>✔️ Cálculo de ROI</span>
+                                    <span>✔️ Lógica técnica</span>
+                                </div>
+                                <div class="stack-lock-form">
+                                    <input type="email" id="stackLockEmail" placeholder="Seu e-mail corporativo">
+                                    <button class="btn btn-primary" id="stackLockUnlockBtn">Desbloquear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-nav center">
+                    <button class="btn btn-secondary" onclick="resetForm()">Responder novamente</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Tools Section -->
+    <section class="ai-tools-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Compatibilidade</span>
+                <h2 class="section-title">Funciona com as principais <span class="gradient-text">ferramentas de IA</span></h2>
+                <p class="section-subtitle">
+                    Compatível com OpenAI, Claude, Gemini, Perplexity e <strong>300+ melhores ferramentas de IA</strong>
+                </p>
+            </div>
+            
+            <div class="logos-carousel">
+                <div class="logos-track">
+                    <!-- First set -->
+                    <div class="logo-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
+                        <span class="logo-name">ChatGPT</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/claude-logo.png?v=10" alt="Claude">
+                        <span class="logo-name">Claude</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini">
+                        <span class="logo-name">Gemini</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/copilot-logo.jpg?v=4" alt="Copilot">
+                        <span class="logo-name">Copilot</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/canva-logo.jpg?v=5" alt="Canva">
+                        <span class="logo-name">Canva</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/gamma-logo.jpg?v=4" alt="Gamma">
+                        <span class="logo-name">Gamma</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/midjourney-logo.png?v=2" alt="Midjourney">
+                        <span class="logo-name">Midjourney</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/perplexity-logo.png?v=2" alt="Perplexity">
+                        <span class="logo-name">Perplexity</span>
+                    </div>
+                    
+                    <!-- Duplicate set for seamless loop -->
+                    <div class="logo-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
+                        <span class="logo-name">ChatGPT</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/claude-logo.png?v=10" alt="Claude">
+                        <span class="logo-name">Claude</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini">
+                        <span class="logo-name">Gemini</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/copilot-logo.jpg?v=4" alt="Copilot">
+                        <span class="logo-name">Copilot</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/canva-logo.jpg?v=5" alt="Canva">
+                        <span class="logo-name">Canva</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/gamma-logo.jpg?v=4" alt="Gamma">
+                        <span class="logo-name">Gamma</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/midjourney-logo.png?v=2" alt="Midjourney">
+                        <span class="logo-name">Midjourney</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="images/perplexity-logo.png?v=2" alt="Perplexity">
+                        <span class="logo-name">Perplexity</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-stats-mini">
+                <div class="ai-stat-item">
+                    <span class="ai-stat-icon">✓</span>
+                    <span>Integração nativa</span>
+                </div>
+                <div class="ai-stat-item">
+                    <span class="ai-stat-icon">✓</span>
+                    <span>Suporte multiplataforma</span>
+                </div>
+                <div class="ai-stat-item">
+                    <span class="ai-stat-icon">✓</span>
+                    <span>Atualizações constantes</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Insights Section -->
     <section class="problem-section" id="insights">
@@ -251,276 +609,7 @@
         </div>
     </section>
 
-    <!-- AI Tools Section -->
-    <section class="ai-tools-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Compatibilidade</span>
-                <h2 class="section-title">Funciona com as principais <span class="gradient-text">ferramentas de IA</span></h2>
-                <p class="section-subtitle">
-                    Compatível com OpenAI, Claude, Gemini, Perplexity e <strong>300+ melhores ferramentas de IA</strong>
-                </p>
-            </div>
-            
-            <div class="logos-carousel">
-                <div class="logos-track">
-                    <!-- First set -->
-                    <div class="logo-item">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
-                        <span class="logo-name">ChatGPT</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/claude-logo.png?v=10" alt="Claude">
-                        <span class="logo-name">Claude</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini">
-                        <span class="logo-name">Gemini</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/copilot-logo.jpg?v=4" alt="Copilot">
-                        <span class="logo-name">Copilot</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/canva-logo.jpg?v=5" alt="Canva">
-                        <span class="logo-name">Canva</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/gamma-logo.jpg?v=4" alt="Gamma">
-                        <span class="logo-name">Gamma</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/midjourney-logo.png?v=2" alt="Midjourney">
-                        <span class="logo-name">Midjourney</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/perplexity-logo.png?v=2" alt="Perplexity">
-                        <span class="logo-name">Perplexity</span>
-                    </div>
-                    
-                    <!-- Duplicate set for seamless loop -->
-                    <div class="logo-item">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
-                        <span class="logo-name">ChatGPT</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/claude-logo.png?v=10" alt="Claude">
-                        <span class="logo-name">Claude</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini">
-                        <span class="logo-name">Gemini</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/copilot-logo.jpg?v=4" alt="Copilot">
-                        <span class="logo-name">Copilot</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/canva-logo.jpg?v=5" alt="Canva">
-                        <span class="logo-name">Canva</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/gamma-logo.jpg?v=4" alt="Gamma">
-                        <span class="logo-name">Gamma</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/midjourney-logo.png?v=2" alt="Midjourney">
-                        <span class="logo-name">Midjourney</span>
-                    </div>
-                    <div class="logo-item">
-                        <img src="images/perplexity-logo.png?v=2" alt="Perplexity">
-                        <span class="logo-name">Perplexity</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="ai-stats-mini">
-                <div class="ai-stat-item">
-                    <span class="ai-stat-icon">✓</span>
-                    <span>Integração nativa</span>
-                </div>
-                <div class="ai-stat-item">
-                    <span class="ai-stat-icon">✓</span>
-                    <span>Suporte multiplataforma</span>
-                </div>
-                <div class="ai-stat-item">
-                    <span class="ai-stat-icon">✓</span>
-                    <span>Atualizações constantes</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stack Builder Section -->
-    <section class="stack-builder-section" id="diagnostico">
-        <div class="container">
-            <div class="stack-builder-container">
-                <!-- Stack Builder Header -->
-                <div class="stack-builder-header">
-                    <div class="stack-builder-title">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                        </svg>
-                        <h2>Stack Builder</h2>
-                    </div>
-                    <p class="stack-builder-desc">Configure seu time para análise de ROI. Construa a Stack de IA ideal baseado em análise de ROI personalizada.</p>
-                    <div class="build-id">BUILD_ID: <span id="buildId">0000</span></div>
-                </div>
-
-                <!-- Stack Builder Form -->
-                <div class="stack-builder-form" id="stackBuilderForm">
-                    <!-- Area Selection -->
-                    <div class="stack-area-selection">
-                        <h3 class="stack-section-title">Qual a área principal do Time?</h3>
-                        <div class="area-cards">
-                            <label class="area-card" data-area="marketing">
-                                <input type="radio" name="teamArea" value="marketing" required>
-                                <div class="area-card-content">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="9" cy="7" r="4"></circle>
-                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                    </svg>
-                                    <span>Marketing</span>
-                                </div>
-                            </label>
-                            <label class="area-card" data-area="tecnologia">
-                                <input type="radio" name="teamArea" value="tecnologia">
-                                <div class="area-card-content">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                        <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"></path>
-                                    </svg>
-                                    <span>Tecnologia</span>
-                                </div>
-                            </label>
-                            <label class="area-card" data-area="vendas">
-                                <input type="radio" name="teamArea" value="vendas">
-                                <div class="area-card-content">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                    </svg>
-                                    <span>Vendas</span>
-                                </div>
-                            </label>
-                            <label class="area-card" data-area="financeiro">
-                                <input type="radio" name="teamArea" value="financeiro">
-                                <div class="area-card-content">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <line x1="12" y1="1" x2="12" y2="23"></line>
-                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                                    </svg>
-                                    <span>Financeiro</span>
-                                </div>
-                            </label>
-                            <label class="area-card" data-area="personalizado">
-                                <input type="radio" name="teamArea" value="personalizado">
-                                <div class="area-card-content">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    </svg>
-                                    <span>Personalizado</span>
-                                </div>
-                            </label>
-                        </div>
-                        <!-- Valor selecionado (mantém estado simples no DOM) -->
-                        <input type="hidden" id="selectedAreaValue" value="">
-                        <div class="custom-area-input" id="customAreaInput" style="display: none;">
-                            <label for="customAreaText" style="display: block; margin-bottom: var(--spacing-sm); font-size: 0.875rem; font-weight: 500; color: #374151;">Informe o nome da área:</label>
-                            <input type="text" id="customAreaText" placeholder="Ex: Recursos Humanos, Jurídico, Operações..." required>
-                        </div>
-                    </div>
-
-                    <!-- Team Members Section -->
-                    <div class="stack-members-section">
-                        <div class="stack-members-header">
-                            <h3 class="stack-section-title">Membros do Time</h3>
-                            <button type="button" class="btn-add-member" onclick="addTeamMember()">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                                Adicionar Membro
-                            </button>
-                        </div>
-                        <div class="team-members-list" id="teamMembersList">
-                            <!-- Team members will be added here dynamically -->
-                        </div>
-                    </div>
-
-                    <!-- Generate Report Button -->
-                    <div class="stack-generate-section">
-                        <button type="button" class="btn-generate-report" onclick="generateStackReport()">
-                            Gerar Relatório de Arquitetura
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M5 12h14M12 5l7 7-7 7"/>
-                            </svg>
-                        </button>
-                        <p class="generate-hint">Análise gratuita de ROI e Ferramentas.</p>
-                    </div>
-                </div>
-
-                <!-- Results Section -->
-                <div class="stack-results" id="stackResults" style="display: none;">
-                    <div class="stack-recommended">
-                        <div class="stack-recommended-header">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="3"></circle>
-                                <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"></path>
-                            </svg>
-                            <h3>Seu Stack Recomendado</h3>
-                        </div>
-                        <div class="stack-info-box">
-                            <p>Este stack foi selecionado com base na senioridade e foco do seu time. Ele equilibra automação com supervisão humana.</p>
-                        </div>
-                        <div class="stack-tools-grid" id="stackToolsGrid">
-                            <!-- Stack tools will be added here -->
-                        </div>
-                    </div>
-
-                    <div class="stack-unlock-section">
-                        <div class="stack-unlock-header">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                            </svg>
-                            <h3>Por que escolhemos isso?</h3>
-                        </div>
-                        <p class="stack-unlock-desc">Desbloqueie a análise detalhada de ROI, curva de aprendizado e o motivo técnico de cada escolha.</p>
-                        <div class="stack-unlock-features">
-                            <div class="unlock-feature">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 12c0-1.657 4.03-3 9-3s9 1.343 9 3"></path>
-                                    <path d="M3 12c0 1.657 4.03 3 9 3s9-1.343 9-3"></path>
-                                    <path d="M3 12h18"></path>
-                                </svg>
-                                <span>CÁLCULO DE ROI</span>
-                            </div>
-                            <div class="unlock-feature">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                    <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"></path>
-                                </svg>
-                                <span>LÓGICA TÉCNICA</span>
-                            </div>
-                        </div>
-                        <div class="stack-unlock-form">
-                            <input type="email" id="stackEmailInput" placeholder="Seu e-mail corporativo" required>
-                            <button type="button" class="btn-unlock-analysis" onclick="unlockStackAnalysis()">
-                                Desbloquear Análise Completa
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Stack Builder Section removed -->
 
     <!-- Blog Section -->
     <section class="blog-section" id="blog">
@@ -652,7 +741,7 @@
             <div class="cta-content">
                 <h2>Transforme seu time hoje.</h2>
                 <p>Você não precisa esperar. Multiplique a produtividade da sua equipe agora.</p>
-                <a href="#diagnostico" class="btn btn-primary btn-large">
+                <a href="#insights" class="btn btn-primary btn-large">
                     Descobrir minha IA ideal
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
